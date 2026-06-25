@@ -2,19 +2,18 @@
 
 Personal portfolio website for **Sahil Ali**, a Full Stack Software Developer based in Ranchi, Jharkhand, India.
 
-The site presents professional experience, skills, projects, certifications, achievements, and contact details with a polished animated interface.
+The site presents professional experience, skills, projects, certifications, and contact details with a polished animated interface.
 
 ## Features
 
 - Responsive single-page portfolio
 - Animated hero section with DarkVeil and SideRays backgrounds
 - Scroll-reactive text effects
-- Interactive MagicBento capability cards
 - Decrypted text reveal animations
 - Sticky frosted-glass navigation with active section highlighting
 - Resume download button
 - Project cards with technology tags and feature highlights
-- Skills, certifications, achievements, and contact sections
+- Skills, certifications, and contact sections
 - SEO metadata, OpenGraph tags, Twitter card metadata, structured data, and favicon
 
 ## Tech Stack
@@ -32,12 +31,10 @@ The site presents professional experience, skills, projects, certifications, ach
 
 - Home
 - About
-- Capabilities
 - Experience
 - Skills
 - Projects
 - Certifications
-- Achievements
 - Contact
 
 ## Getting Started

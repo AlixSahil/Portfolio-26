@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import DarkVeil from './components/react-bits/DarkVeil.jsx';
 import DecryptedText from './components/react-bits/DecryptedText.jsx';
-import MagicBento from './components/react-bits/MagicBento.jsx';
 import ScrollReveal from './components/react-bits/ScrollReveal.jsx';
 import ScrollVelocity from './components/react-bits/ScrollVelocity.jsx';
 import SideRays from './components/react-bits/SideRays.jsx';
@@ -99,25 +99,38 @@ const certifications = [
   { title: 'Deloitte Data Analytics Job Simulation', icon: 'chart' }
 ];
 
-const achievements = [
-  { value: 'LOR', label: 'Letter of Recommendation', icon: 'award' },
-  { value: 'Role Model', label: 'Hindalco Bhoomika Certificate', icon: 'badge' },
-  { value: 'First', label: 'Led in-house app development initiatives', icon: 'spark' },
-  { value: 'Multi', label: 'Delivered enterprise digitization solutions', icon: 'rocket' }
-];
-
 const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
-  { id: 'capabilities', label: 'Capabilities' },
   { id: 'experience', label: 'Experience' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'certifications', label: 'Certifications' },
-  { id: 'achievements', label: 'Achievements' },
   { id: 'contact', label: 'Contact' }
 ];
 const navSectionIds = navItems.map(item => item.id);
+
+const revealViewport = { once: true, amount: 0.22 };
+
+const revealUp = {
+  hidden: { opacity: 0, y: 34, filter: 'blur(12px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const staggerGroup = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.09,
+      delayChildren: 0.08
+    }
+  }
+};
 
 function Icon({ name }) {
   const paths = {
@@ -145,45 +158,6 @@ function Icon({ name }) {
     </svg>
   );
 }
-
-const bentoItems = [
-  {
-    label: 'Enterprise',
-    title: 'Modern Apps',
-    description: 'Framework upgrades, performance work, and scalable internal systems for real teams.',
-    icon: <Icon name="code" />
-  },
-  {
-    label: 'Backend',
-    title: 'REST APIs',
-    description: 'Clean service layers, database-backed workflows, and maintainable business logic.',
-    icon: <Icon name="api" />
-  },
-  {
-    label: 'Automation',
-    title: 'AI Workflows',
-    description: 'AI-powered tools and automation platforms that remove repetitive operational work.',
-    icon: <Icon name="ai" />
-  },
-  {
-    label: 'Analytics',
-    title: 'Dashboards',
-    description: 'Reporting surfaces, process monitoring, and decision-ready data views.',
-    icon: <Icon name="chart" />
-  },
-  {
-    label: 'Database',
-    title: 'Oracle + SQL',
-    description: 'Reliable data models, PL/SQL logic, and practical query optimization.',
-    icon: <Icon name="db" />
-  },
-  {
-    label: 'Product',
-    title: 'Useful UX',
-    description: 'Interfaces shaped around clarity, speed, and daily enterprise usage.',
-    icon: <Icon name="ux" />
-  }
-];
 
 function useTypingCycle(words) {
   const [wordIndex, setWordIndex] = useState(0);
@@ -220,15 +194,25 @@ function useActiveSection(sectionIds) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.innerHeight * 0.34;
+      const marker = window.innerHeight * 0.42;
       let current = sectionIds[0];
+      let nearestDistance = Number.POSITIVE_INFINITY;
 
       sectionIds.forEach(id => {
         const element = document.getElementById(id);
-        if (element && element.getBoundingClientRect().top <= offset) {
+        if (!element) return;
+
+        const rect = element.getBoundingClientRect();
+        const distance = Math.abs(rect.top - marker);
+        if (rect.top <= marker && rect.bottom >= 96 && distance < nearestDistance) {
           current = id;
+          nearestDistance = distance;
         }
       });
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
+        current = sectionIds[sectionIds.length - 1];
+      }
 
       setActiveSection(current);
     };
@@ -248,18 +232,28 @@ function useActiveSection(sectionIds) {
 
 function SectionHeading({ eyebrow, title }) {
   return (
-    <div className="section-heading">
+    <motion.div
+      className="section-heading"
+      variants={revealUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={revealViewport}
+    >
       <p>{eyebrow}</p>
-      <h2>
-        <DecryptedText text={title} animateOn="inViewHover" speed={32} maxIterations={10} encryptedClassName="encrypted" />
-      </h2>
-    </div>
+      <h2>{title}</h2>
+    </motion.div>
   );
 }
 
 function ExperienceItem({ item, index }) {
   return (
-    <article className="timeline-item">
+    <motion.article
+      className="timeline-item"
+      variants={revealUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={revealViewport}
+    >
       <span className="project-index">0{index + 1}</span>
       <div>
         <p className="project-label">{item.period}</p>
@@ -271,7 +265,7 @@ function ExperienceItem({ item, index }) {
           <li key={highlight}>{highlight}</li>
         ))}
       </ul>
-    </article>
+    </motion.article>
   );
 }
 
@@ -287,7 +281,15 @@ function ProjectVisual({ tone, title }) {
 
 function ProjectCard({ project, index }) {
   return (
-    <article className="project-card">
+    <motion.article
+      className="project-card"
+      variants={revealUp}
+      initial="hidden"
+      whileInView="visible"
+      whileHover={{ y: -7 }}
+      whileTap={{ scale: 0.985 }}
+      viewport={revealViewport}
+    >
       <ProjectVisual tone={project.tone} title={project.title} />
       <div className="project-card-body">
         <span className="project-index">0{index + 1}</span>
@@ -310,13 +312,21 @@ function ProjectCard({ project, index }) {
           <a href="#contact">Live Demo</a>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
 function SkillGroup({ group }) {
   return (
-    <article className="skill-card">
+    <motion.article
+      className="skill-card"
+      variants={revealUp}
+      initial="hidden"
+      whileInView="visible"
+      whileHover={{ y: -5 }}
+      whileTap={{ scale: 0.985 }}
+      viewport={revealViewport}
+    >
       <div className="card-title-row">
         <span className="section-icon"><Icon name={group.icon} /></span>
         <h3>{group.title}</h3>
@@ -324,11 +334,11 @@ function SkillGroup({ group }) {
       <div className="skill-list">
         {group.skills.map(skill => (
           <span key={skill}>
-            <DecryptedText text={skill} animateOn="view" sequential speed={18} encryptedClassName="encrypted" />
+            <DecryptedText text={skill} animateOn="view" sequential speed={42} encryptedClassName="encrypted" />
           </span>
         ))}
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -348,9 +358,15 @@ export default function App() {
     <main id="main">
       <nav className="nav" aria-label="Primary navigation">
         {navItems.map(item => (
-          <a className={activeSection === item.id ? 'active' : ''} href={`#${item.id}`} key={item.id}>
+          <motion.a
+            className={activeSection === item.id ? 'active' : ''}
+            href={`#${item.id}`}
+            key={item.id}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.96 }}
+          >
             {item.label}
-          </a>
+          </motion.a>
         ))}
       </nav>
 
@@ -388,12 +404,24 @@ export default function App() {
               text="Full Stack Software Developer"
               animateOn="view"
               sequential
-              speed={26}
+              speed={58}
               revealDirection="center"
               encryptedClassName="encrypted"
             />
           </p>
-          <h1>Hi, I'm Sahil Ali.</h1>
+          <h1 aria-label="Hi, I'm Sahil Ali.">
+            Hi, I'm{' '}
+            <DecryptedText
+              text="Sahil Ali."
+              animateOn="view"
+              sequential
+              speed={92}
+              revealDirection="center"
+              encryptedClassName="encrypted hero-name-encrypted"
+              parentClassName="hero-name"
+              showScreenReaderText={false}
+            />
+          </h1>
           <p className="typing-line" aria-label={`Animated role: ${typedRole}`}>
             {typedRole}
             <span aria-hidden="true">|</span>
@@ -404,9 +432,9 @@ export default function App() {
             efficient software engineering.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="#projects">View Projects</a>
-            <a className="button secondary" href="/Sahil-Ali-Resume.pdf" download>Download Resume</a>
-            <a className="button secondary" href="#contact">Contact Me</a>
+            <motion.a className="button primary" href="#projects" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>View Projects</motion.a>
+            <motion.a className="button secondary" href="/Sahil-Ali-Resume.pdf" download whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>Download Resume</motion.a>
+            <motion.a className="button secondary" href="#contact" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>Contact Me</motion.a>
           </div>
         </div>
       </section>
@@ -437,29 +465,18 @@ export default function App() {
             architecture, maintainable code, and scalable software that can keep improving after launch.
           </p>
         </div>
-        <div className="profile-facts">
-          <span>Ranchi, Jharkhand, India</span>
-          <span>MCA, BIT Mesra</span>
-          <span>Enterprise Applications</span>
-          <span>Automation + AI Systems</span>
-        </div>
-      </section>
-
-      <section id="capabilities" className="content-section bento-panel">
-        <div className="section-veil" aria-hidden="true">
-          <DarkVeil speed={0.32} warpAmount={0.045} noiseIntensity={0.018} scanlineIntensity={0.025} resolutionScale={0.65} />
-        </div>
-        <SectionHeading eyebrow="Capabilities" title="Micro-interactions around serious engineering work" />
-        <MagicBento
-          items={bentoItems}
-          enableStars
-          enableBorderGlow
-          enableTilt
-          enableMagnetism
-          clickEffect
-          glowColor="243, 207, 97"
-          particleCount={10}
-        />
+        <motion.div
+          className="profile-facts"
+          variants={staggerGroup}
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+        >
+          <motion.span variants={revealUp}>Ranchi, Jharkhand, India</motion.span>
+          <motion.span variants={revealUp}>MCA, BIT Mesra</motion.span>
+          <motion.span variants={revealUp}>Enterprise Applications</motion.span>
+          <motion.span variants={revealUp}>Automation + AI Systems</motion.span>
+        </motion.div>
       </section>
 
       <section id="experience" className="content-section dark-veil-section">
@@ -467,29 +484,29 @@ export default function App() {
           <DarkVeil hueShift={-12} speed={0.26} warpAmount={0.035} noiseIntensity={0.016} scanlineIntensity={0.02} resolutionScale={0.62} />
         </div>
         <SectionHeading eyebrow="Experience" title="Enterprise software, automation, and applied AI" />
-        <div className="timeline">
+        <motion.div className="timeline" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
           {experience.map((item, index) => (
             <ExperienceItem key={item.role} item={item} index={index} />
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <section id="skills" className="content-section light-section">
         <SectionHeading eyebrow="Skills" title="A practical stack for shipping full systems" />
-        <div className="skills-grid">
+        <motion.div className="skills-grid" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
           {skillGroups.map(group => (
             <SkillGroup key={group.title} group={group} />
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <section id="projects" className="content-section light-section">
         <SectionHeading eyebrow="Projects" title="Selected systems built around real business workflows" />
-        <div className="project-grid premium-grid">
+        <motion.div className="project-grid premium-grid" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
           {projects.map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <section id="certifications" className="content-section">
@@ -497,30 +514,23 @@ export default function App() {
           <DarkVeil hueShift={-4} speed={0.3} warpAmount={0.04} noiseIntensity={0.02} scanlineIntensity={0.02} resolutionScale={0.62} />
         </div>
         <SectionHeading eyebrow="Certifications" title="Proof points across cloud, automation, and analytics" />
-        <div className="cert-grid">
+        <motion.div className="cert-grid" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
           {certifications.map((certification, index) => (
-            <article className="cert-card" key={certification.title}>
+            <motion.article
+              className="cert-card"
+              key={certification.title}
+              variants={revealUp}
+              whileHover={{ y: -5 }}
+              whileTap={{ scale: 0.985 }}
+            >
               <div className="cert-topline">
                 <span>0{index + 1}</span>
                 <span className="section-icon dark-icon"><Icon name={certification.icon} /></span>
               </div>
               <h3>{certification.title}</h3>
-            </article>
+            </motion.article>
           ))}
-        </div>
-      </section>
-
-      <section id="achievements" className="content-section light-section">
-        <SectionHeading eyebrow="Achievements" title="Recognition from enterprise delivery work" />
-        <div className="achievement-grid">
-          {achievements.map(item => (
-            <article className="achievement-item" key={item.label}>
-              <span className="section-icon achievement-icon"><Icon name={item.icon} /></span>
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </article>
-          ))}
-        </div>
+        </motion.div>
       </section>
 
       <section id="contact" className="contact-section">
@@ -528,11 +538,11 @@ export default function App() {
           <p className="project-label">Contact</p>
           <h2>Let's build something useful.</h2>
           <div className="contact-links">
-            <a href="mailto:alisahil8210@gmail.com">alisahil8210@gmail.com</a>
-            <a href="tel:+918210672479">+91 8210672479</a>
+            <motion.a href="mailto:alisahil8210@gmail.com" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>alisahil8210@gmail.com</motion.a>
+            <motion.a href="tel:+918210672479" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>+91 8210672479</motion.a>
             <span>Ranchi, Jharkhand</span>
-            <a href="https://github.com/AlixSahil" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://linkedin.com/in/sahilali8210" target="_blank" rel="noreferrer">LinkedIn</a>
+            <motion.a href="https://github.com/AlixSahil" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>GitHub</motion.a>
+            <motion.a href="https://linkedin.com/in/sahilali8210" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>LinkedIn</motion.a>
           </div>
         </div>
         <form className="contact-form" onSubmit={handleContactSubmit}>

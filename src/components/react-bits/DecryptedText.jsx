@@ -31,6 +31,7 @@ export default function DecryptedText({
   encryptedClassName = '',
   animateOn = 'hover',
   clickMode = 'once',
+  showScreenReaderText = true,
   ...props
 }) {
   const [displayText, setDisplayText] = useState(text);
@@ -353,7 +354,7 @@ export default function DecryptedText({
 
   return (
     <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
-      <span style={styles.srOnly}>{displayText}</span>
+      {showScreenReaderText && <span style={styles.srOnly}>{displayText}</span>}
 
       <span aria-hidden="true">
         {displayText.split('').map((char, index) => {
