@@ -1,4 +1,4 @@
-# Sahil Ali - Portfolio Website
+# Portfolio Website
 
 A modern, responsive portfolio website showcasing professional experience, skills, projects, and certifications.
 
