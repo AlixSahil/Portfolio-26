@@ -1,20 +1,8 @@
-# Sahil Ali Portfolio
+# Sahil Ali - Portfolio Website
 
-Personal portfolio website for **Sahil Ali**, a Full Stack Software Developer based in Ranchi, Jharkhand, India.
+A modern, responsive portfolio website showcasing professional experience, skills, projects, and certifications.
 
-The site presents professional experience, skills, projects, certifications, and contact details with a polished animated interface.
-
-## Features
-
-- Responsive single-page portfolio
-- Animated hero section with DarkVeil and SideRays backgrounds
-- Scroll-reactive text effects
-- Decrypted text reveal animations
-- Sticky frosted-glass navigation with active section highlighting
-- Resume download button
-- Project cards with technology tags and feature highlights
-- Skills, certifications, and contact sections
-- SEO metadata, OpenGraph tags, Twitter card metadata, structured data, and favicon
+**Live:** [https://sahilali-portfolio.vercel.app](https://sahilali-portfolio.vercel.app) *(Replace with your deployed URL)*
 
 ## Tech Stack
 
@@ -22,10 +10,20 @@ The site presents professional experience, skills, projects, certifications, and
 - Vite
 - JavaScript
 - CSS
-- React Bits components
-- OGL/WebGL
-- GSAP
 - Motion
+- GSAP
+- OGL/WebGL
+
+## Features
+
+- Responsive single-page application
+- Animated hero section with visual effects
+- Scroll-based reveal animations
+- Sticky navigation with active section highlighting
+- Resume download button
+- Project showcase with technology tags
+- Contact information and social links
+- SEO optimized with metadata and structured data
 
 ## Sections
 
@@ -45,7 +43,7 @@ Install dependencies:
 npm install
 ```
 
-Run the development server:
+Start the development server:
 
 ```bash
 npm run dev
@@ -63,29 +61,13 @@ Preview the production build:
 npm run preview
 ```
 
-## Resume
+## Recommended Build Settings
 
-The downloadable resume is stored at:
-
-```text
-public/Sahil-Ali-Resume.pdf
 ```
-
-Replace this file whenever a newer resume needs to be published.
-
-## Deployment
-
-This project is ready to deploy on Vercel, Netlify, or any static hosting platform that supports Vite builds.
-
-Recommended build settings:
-
-```text
 Build command: npm run build
 Output directory: dist
 ```
 
-## Contact
+## Deployment
 
-- Email: [alisahil8210@gmail.com](mailto:alisahil8210@gmail.com)
-- GitHub: [github.com/AlixSahil](https://github.com/AlixSahil)
-- LinkedIn: [linkedin.com/in/sahilali8210](https://linkedin.com/in/sahilali8210)
+Deploy to Vercel, Netlify, or any static hosting platform that supports Vite builds.
