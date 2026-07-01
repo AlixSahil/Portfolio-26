@@ -541,6 +541,15 @@ export default function App() {
     const el = sceneRef.current;
     if (!el) return undefined;
     if (reducedMotion || window.innerWidth < 600) return undefined;
+
+    // Warm the three.js chunk during idle time so it's already cached before the section
+    // scrolls into view — avoids the download hitch mid-scroll.
+    const preload = () => {
+      import('./components/ScrollScene.jsx');
+    };
+    const hasIdle = 'requestIdleCallback' in window;
+    const idleId = hasIdle ? window.requestIdleCallback(preload, { timeout: 4000 }) : window.setTimeout(preload, 1800);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -548,10 +557,15 @@ export default function App() {
           observer.disconnect();
         }
       },
-      { rootMargin: '300px' }
+      { rootMargin: '900px' }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+
+    return () => {
+      observer.disconnect();
+      if (hasIdle) window.cancelIdleCallback(idleId);
+      else clearTimeout(idleId);
+    };
   }, [reducedMotion]);
 
   const handleNavClick = (event, id) => {
