@@ -1,6 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
+import { shouldFreezeMotion } from '../../hooks/useReducedMotion.js';
 import './SideRays.css';
+
+const dprCap = () => {
+  const isMobile = typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 860px)').matches;
+  return Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2);
+};
 
 const hexToRgb = hex => {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -80,7 +86,7 @@ const SideRays = ({
       if (!containerRef.current) return;
 
       const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
+        dpr: dprCap(),
         alpha: true
       });
       rendererRef.current = renderer;
@@ -185,12 +191,22 @@ void main() {
       const mesh = new Mesh(gl, { geometry, program });
       meshRef.current = mesh;
 
+      const frozen = shouldFreezeMotion();
+
       const updateSize = () => {
         if (!containerRef.current || !renderer) return;
-        renderer.dpr = Math.min(window.devicePixelRatio, 2);
+        renderer.dpr = dprCap();
         const { clientWidth: w, clientHeight: h } = containerRef.current;
         renderer.setSize(w, h);
         uniforms.iResolution.value = [w * renderer.dpr, h * renderer.dpr];
+        // Keep the static frame correct after a resize when animation is frozen.
+        if (frozen) {
+          try {
+            renderer.render({ scene: mesh });
+          } catch (e) {
+            /* ignore */
+          }
+        }
       };
 
       const loop = t => {
@@ -206,7 +222,17 @@ void main() {
 
       window.addEventListener('resize', updateSize);
       updateSize();
-      animationIdRef.current = requestAnimationFrame(loop);
+      if (frozen) {
+        // Reduced-motion / low-power: render a single static frame, no loop.
+        uniforms.iTime.value = 1.4;
+        try {
+          renderer.render({ scene: mesh });
+        } catch (e) {
+          /* ignore */
+        }
+      } else {
+        animationIdRef.current = requestAnimationFrame(loop);
+      }
 
       cleanupFunctionRef.current = () => {
         if (animationIdRef.current) {

@@ -1,4 +1,24 @@
+.darkveil-root {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Static stand-in shown when WebGL is unavailable — keeps the dark "veil" look
+   so the section never falls back to a flat black box. */
+.darkveil-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 70% 20%, rgba(96, 52, 150, 0.55), transparent 60%),
+    radial-gradient(90% 70% at 20% 80%, rgba(52, 30, 92, 0.4), transparent 62%),
+    linear-gradient(180deg, #0c0814, #060409);
+}
+
 .darkveil-canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;

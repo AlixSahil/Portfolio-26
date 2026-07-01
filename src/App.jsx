@@ -1,6 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
+import { motion, useScroll } from 'motion/react';
+import {
+  SiReact, SiJavascript, SiTypescript, SiHtml5, SiCss, SiTailwindcss,
+  SiNodedotjs, SiExpress, SiDjango, SiFastapi, SiPython, SiC,
+  SiPostgresql, SiMysql, SiMongodb, SiFirebase, SiGit, SiDocker,
+  SiWordpress, SiClaude, SiGithubcopilot, SiN8N
+} from 'react-icons/si';
+import useReducedMotion from './hooks/useReducedMotion.js';
+import useTilt from './hooks/useTilt.js';
+import useSmoothScroll from './hooks/useSmoothScroll.js';
 import DarkVeil from './components/react-bits/DarkVeil.jsx';
+
+// three.js is heavy — load the scroll-reactive scene only when its section approaches.
+const ScrollScene = lazy(() => import('./components/ScrollScene.jsx'));
 import DecryptedText from './components/react-bits/DecryptedText.jsx';
 import ScrollReveal from './components/react-bits/ScrollReveal.jsx';
 import ScrollVelocity from './components/react-bits/ScrollVelocity.jsx';
@@ -57,6 +69,8 @@ const skillGroups = [
   { title: 'AI & Automation', icon: 'ai', skills: ['Claude', 'ChatGPT', 'GitHub Copilot', 'Google Antigravity', 'n8n'] }
 ];
 
+// repo / demo: fill in real per-project URLs to render the buttons.
+// When both are null the card shows a `note` tag instead of faking a link.
 const projects = [
   {
     title: 'Enterprise Inventory Management System',
@@ -64,7 +78,10 @@ const projects = [
     description:
       'Enterprise inventory management platform with inventory tracking, stock monitoring, workflow automation, QR-based processes, dashboards, alerts, and reporting.',
     features: ['Stock monitoring', 'QR workflows', 'Automated alerts', 'Operational dashboards'],
-    tone: 'inventory'
+    tone: 'inventory',
+    repo: null,
+    demo: null,
+    note: 'Enterprise · internal'
   },
   {
     title: 'Employee Survey Management System',
@@ -72,7 +89,10 @@ const projects = [
     description:
       'Department-wise survey platform featuring authentication, email automation, response tracking, reporting, dashboards, and workflow management.',
     features: ['Authentication', 'Response tracking', 'Email automation', 'Department reports'],
-    tone: 'survey'
+    tone: 'survey',
+    repo: null,
+    demo: null,
+    note: 'Enterprise · internal'
   },
   {
     title: 'Face Recognition Attendance System',
@@ -80,7 +100,10 @@ const projects = [
     description:
       'Real-time facial recognition attendance platform with automated attendance tracking and analytics dashboard.',
     features: ['Face recognition', 'Attendance logs', 'Flask dashboard', 'SQLite storage'],
-    tone: 'vision'
+    tone: 'vision',
+    repo: null,
+    demo: null,
+    note: 'Personal project'
   },
   {
     title: 'Blockchain Document Verification',
@@ -88,7 +111,10 @@ const projects = [
     description:
       'Blockchain-powered document verification system ensuring secure and tamper-proof digital verification.',
     features: ['Smart contracts', 'IPFS storage', 'Wallet flow', 'Tamper-proof verification'],
-    tone: 'chain'
+    tone: 'chain',
+    repo: null,
+    demo: null,
+    note: 'Personal project'
   }
 ];
 
@@ -139,17 +165,12 @@ function Icon({ name }) {
     ai: 'M12 3v3M12 18v3M3 12h3M18 12h3M6.6 6.6l2.1 2.1M15.3 15.3l2.1 2.1M17.4 6.6l-2.1 2.1M8.7 15.3l-2.1 2.1M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z',
     chart: 'M5 19V5M5 19h14M9 16v-5M13 16V8M17 16v-8',
     db: 'M5 7c0-2 14-2 14 0s-14 2-14 0Zm0 0v10c0 2 14 2 14 0V7M5 12c0 2 14 2 14 0',
-    ux: 'M4 7h16M7 4v6M17 4v6M6 14h5v5H6zM14 14h4v2h-4zM14 19h6',
     layout: 'M4 5h16M4 10h7v9H4zM14 10h6v4h-6zM14 17h6',
     system: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1',
     tools: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z',
     apex: 'M12 3 3 19h18L12 3ZM12 8v5M12 16h.01',
     cloud: 'M7 18h10a4 4 0 0 0 .4-8 6 6 0 0 0-11.1 1.5A3.5 3.5 0 0 0 7 18Z',
-    automation: 'M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7M18 4v5h-5M6 20v-5h5',
-    award: 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM9 14l-1 7 4-2 4 2-1-7',
-    badge: 'M12 3 19 7v6c0 4-3 7-7 8-4-1-7-4-7-8V7l7-4ZM9 12l2 2 4-5',
-    spark: 'M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2ZM19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8L19 17Z',
-    rocket: 'M14 4c3 0 5-2 6-2 0 1-2 3-2 6 0 5-4 8-8 8l-4 4 1-5-5 1 4-4c0-4 3-8 8-8ZM13 9a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z'
+    automation: 'M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7M18 4v5h-5M6 20v-5h5'
   };
 
   return (
@@ -160,11 +181,15 @@ function Icon({ name }) {
 }
 
 function useTypingCycle(words) {
+  const reducedMotion = useReducedMotion();
   const [wordIndex, setWordIndex] = useState(0);
   const [letterCount, setLetterCount] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    // Reduced motion: hold the first role fully typed, no cycling.
+    if (reducedMotion) return undefined;
+
     const word = words[wordIndex];
     const atEnd = letterCount === word.length;
     const atStart = letterCount === 0;
@@ -184,8 +209,9 @@ function useTypingCycle(words) {
     }, delay);
 
     return () => clearTimeout(timeout);
-  }, [deleting, letterCount, wordIndex, words]);
+  }, [deleting, letterCount, wordIndex, words, reducedMotion]);
 
+  if (reducedMotion) return words[0];
   return words[wordIndex].slice(0, letterCount);
 }
 
@@ -193,37 +219,39 @@ function useActiveSection(sectionIds) {
   const [activeSection, setActiveSection] = useState(sectionIds[0]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const marker = window.innerHeight * 0.42;
-      let current = sectionIds[0];
-      let nearestDistance = Number.POSITIVE_INFINITY;
+    // IntersectionObserver fires only on threshold crossings — no per-scroll-tick
+    // getBoundingClientRect layout reads. A thin band ~42% down the viewport marks
+    // the "active" section as it passes through.
+    const inBand = new Set();
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) inBand.add(entry.target.id);
+          else inBand.delete(entry.target.id);
+        });
+        const current = sectionIds.find(id => inBand.has(id));
+        if (current) setActiveSection(current);
+      },
+      { rootMargin: '-42% 0px -56% 0px', threshold: 0 }
+    );
 
-      sectionIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (!element) return;
+    sectionIds.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
 
-        const rect = element.getBoundingClientRect();
-        const distance = Math.abs(rect.top - marker);
-        if (rect.top <= marker && rect.bottom >= 96 && distance < nearestDistance) {
-          current = id;
-          nearestDistance = distance;
-        }
-      });
-
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
-        current = sectionIds[sectionIds.length - 1];
+    // Snap to the last section once the page is scrolled to the very bottom (short
+    // final sections may never reach the band).
+    const handleBottom = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        setActiveSection(sectionIds[sectionIds.length - 1]);
       }
-
-      setActiveSection(current);
     };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    window.addEventListener('scroll', handleBottom, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      observer.disconnect();
+      window.removeEventListener('scroll', handleBottom);
     };
   }, [sectionIds]);
 
@@ -269,28 +297,102 @@ function ExperienceItem({ item, index }) {
   );
 }
 
-function ProjectVisual({ tone, title }) {
+// Distinct, imageless schematic per project so the four cards stop looking identical.
+const projectArt = {
+  inventory: (
+    <>
+      <rect x="24" y="30" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
+      <rect x="24" y="30" width="84" height="9" rx="4.5" fill="#f3cf61" />
+      <rect x="24" y="55" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
+      <rect x="24" y="55" width="52" height="9" rx="4.5" fill="#6fb5ff" />
+      <rect x="24" y="80" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
+      <rect x="24" y="80" width="100" height="9" rx="4.5" fill="#f3cf61" />
+      <rect x="168" y="30" width="48" height="48" rx="7" fill="none" stroke="rgba(247,244,236,0.3)" strokeWidth="2" />
+      <rect x="176" y="38" width="11" height="11" rx="2" fill="#f3cf61" />
+      <rect x="197" y="38" width="11" height="11" rx="2" fill="#f3cf61" />
+      <rect x="176" y="59" width="11" height="11" rx="2" fill="#f3cf61" />
+      <rect x="197" y="59" width="11" height="11" rx="2" fill="#6fb5ff" />
+    </>
+  ),
+  survey: (
+    <>
+      <rect x="28" y="66" width="16" height="30" rx="3" fill="#f3cf61" />
+      <rect x="52" y="52" width="16" height="44" rx="3" fill="#6fb5ff" />
+      <rect x="76" y="40" width="16" height="56" rx="3" fill="#f3cf61" />
+      <rect x="100" y="28" width="16" height="68" rx="3" fill="#6fb5ff" />
+      <g stroke="rgba(247,244,236,0.4)" strokeWidth="2" fill="none" strokeLinecap="round">
+        <rect x="150" y="34" width="13" height="13" rx="3" />
+        <line x1="172" y1="40.5" x2="214" y2="40.5" />
+        <rect x="150" y="58" width="13" height="13" rx="3" />
+        <line x1="172" y1="64.5" x2="206" y2="64.5" />
+        <rect x="150" y="82" width="13" height="13" rx="3" />
+        <line x1="172" y1="88.5" x2="214" y2="88.5" />
+      </g>
+      <g stroke="#f3cf61" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M153 40.5 l2.5 3 l4.5 -6" />
+        <path d="M153 64.5 l2.5 3 l4.5 -6" />
+      </g>
+    </>
+  ),
+  vision: (
+    <>
+      <g stroke="#6fb5ff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M74 32 h-18 v18" />
+        <path d="M166 32 h18 v18" />
+        <path d="M74 92 h-18 v-18" />
+        <path d="M166 92 h18 v-18" />
+      </g>
+      <circle cx="104" cy="54" r="3.4" fill="#f3cf61" />
+      <circle cx="136" cy="54" r="3.4" fill="#f3cf61" />
+      <path d="M104 74 q16 11 32 0" stroke="#f3cf61" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <line x1="56" y1="62" x2="184" y2="62" stroke="rgba(111,181,255,0.45)" strokeWidth="1.5" strokeDasharray="5 5" />
+    </>
+  ),
+  chain: (
+    <>
+      <g fill="none" strokeWidth="2.5" strokeLinecap="round">
+        <rect x="26" y="42" width="46" height="40" rx="8" stroke="#f3cf61" />
+        <rect x="97" y="42" width="46" height="40" rx="8" stroke="#6fb5ff" />
+        <rect x="168" y="42" width="46" height="40" rx="8" stroke="#f3cf61" />
+        <line x1="72" y1="62" x2="97" y2="62" stroke="rgba(247,244,236,0.4)" />
+        <line x1="143" y1="62" x2="168" y2="62" stroke="rgba(247,244,236,0.4)" />
+      </g>
+      <g stroke="rgba(247,244,236,0.34)" strokeWidth="2" strokeLinecap="round">
+        <line x1="34" y1="56" x2="58" y2="56" />
+        <line x1="34" y1="66" x2="52" y2="66" />
+        <line x1="105" y1="56" x2="129" y2="56" />
+        <line x1="105" y1="66" x2="123" y2="66" />
+      </g>
+      <path d="M180 62 l4 5 l8 -10" stroke="#f3cf61" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  )
+};
+
+function ProjectVisual({ tone }) {
   return (
-    <div className={`project-visual ${tone}`} aria-label={`${title} visual preview`}>
-      <span />
-      <span />
-      <span />
+    <div className={`project-visual ${tone}`} aria-hidden="true">
+      <svg className="pv-art" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+        {projectArt[tone]}
+      </svg>
     </div>
   );
 }
 
 function ProjectCard({ project, index }) {
+  const tilt = useTilt(6);
   return (
     <motion.article
-      className="project-card"
+      className="project-card tilt-card"
       variants={revealUp}
       initial="hidden"
       whileInView="visible"
       whileHover={{ y: -7 }}
       whileTap={{ scale: 0.985 }}
       viewport={revealViewport}
+      style={tilt.style}
+      {...tilt.handlers}
     >
-      <ProjectVisual tone={project.tone} title={project.title} />
+      <ProjectVisual tone={project.tone} />
       <div className="project-card-body">
         <span className="project-index">0{index + 1}</span>
         <div>
@@ -308,36 +410,107 @@ function ProjectCard({ project, index }) {
           ))}
         </ul>
         <div className="card-actions">
-          <a href="https://github.com/AlixSahil" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="#contact">Live Demo</a>
+          {project.repo && (
+            <a href={project.repo} target="_blank" rel="noreferrer">View code</a>
+          )}
+          {project.demo && (
+            <a href={project.demo} target="_blank" rel="noreferrer">Live demo</a>
+          )}
+          {!project.repo && !project.demo && project.note && (
+            <span className="card-note">{project.note}</span>
+          )}
         </div>
       </div>
     </motion.article>
   );
 }
 
+// Generic "cube" mark for skills without a brand logo (concepts, un-branded tech).
+function FallbackSkillIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3L18.5 8 12 11.7 5.5 8 12 4.3ZM5 9.7l6 3.4v6.6l-6-3.3V9.7Zm14 0v6.7l-6 3.3v-6.6l6-3.4Z" />
+    </svg>
+  );
+}
+
+// [icon, brand colour]. Skills not listed fall back to the neutral cube in the chip colour.
+const skillIcons = {
+  React: [SiReact, '#61DAFB'],
+  JavaScript: [SiJavascript, '#E0B400'],
+  TypeScript: [SiTypescript, '#3178C6'],
+  HTML: [SiHtml5, '#E34F26'],
+  CSS: [SiCss, '#1572B6'],
+  'Tailwind CSS': [SiTailwindcss, '#06B6D4'],
+  'Node.js': [SiNodedotjs, '#5FA04E'],
+  Express: [SiExpress, '#4B5563'],
+  Django: [SiDjango, '#0C4B33'],
+  FastAPI: [SiFastapi, '#009688'],
+  Python: [SiPython, '#3776AB'],
+  C: [SiC, '#5A7FA0'],
+  PostgreSQL: [SiPostgresql, '#4169E1'],
+  MySQL: [SiMysql, '#00618A'],
+  MongoDB: [SiMongodb, '#47A248'],
+  Firebase: [SiFirebase, '#E8A400'],
+  Git: [SiGit, '#F05032'],
+  Docker: [SiDocker, '#2496ED'],
+  WordPress: [SiWordpress, '#21759B'],
+  Claude: [SiClaude, '#D97757'],
+  'GitHub Copilot': [SiGithubcopilot, '#4B5563'],
+  n8n: [SiN8N, '#EA4B71']
+};
+
 function SkillGroup({ group }) {
+  const tilt = useTilt(5);
   return (
     <motion.article
-      className="skill-card"
+      className="skill-card tilt-card"
       variants={revealUp}
       initial="hidden"
       whileInView="visible"
       whileHover={{ y: -5 }}
       whileTap={{ scale: 0.985 }}
       viewport={revealViewport}
+      style={tilt.style}
+      {...tilt.handlers}
     >
       <div className="card-title-row">
         <span className="section-icon"><Icon name={group.icon} /></span>
         <h3>{group.title}</h3>
       </div>
       <div className="skill-list">
-        {group.skills.map(skill => (
-          <span key={skill}>
-            <DecryptedText text={skill} animateOn="view" sequential speed={42} encryptedClassName="encrypted" />
-          </span>
-        ))}
+        {group.skills.map(skill => {
+          const entry = skillIcons[skill];
+          const SkillIcon = entry ? entry[0] : FallbackSkillIcon;
+          const color = entry ? entry[1] : '#9c968a';
+          return (
+            <span key={skill}>
+              <SkillIcon className="skill-chip-icon" style={color ? { color } : undefined} aria-hidden="true" />
+              <DecryptedText text={skill} animateOn="view" sequential speed={42} encryptedClassName="encrypted" />
+            </span>
+          );
+        })}
       </div>
+    </motion.article>
+  );
+}
+
+function CertCard({ certification, index }) {
+  const tilt = useTilt(5);
+  return (
+    <motion.article
+      className="cert-card tilt-card"
+      variants={revealUp}
+      whileHover={{ y: -5 }}
+      whileTap={{ scale: 0.985 }}
+      style={tilt.style}
+      {...tilt.handlers}
+    >
+      <div className="cert-topline">
+        <span>0{index + 1}</span>
+        <span className="section-icon dark-icon"><Icon name={certification.icon} /></span>
+      </div>
+      <h3>{certification.title}</h3>
     </motion.article>
   );
 }
@@ -345,6 +518,59 @@ function SkillGroup({ group }) {
 export default function App() {
   const typedRole = useTypingCycle(typingRoles);
   const activeSection = useActiveSection(navSectionIds);
+  const reducedMotion = useReducedMotion();
+  const navRef = useRef(null);
+  const [contactStatus, setContactStatus] = useState('');
+  const { scrollYProgress } = useScroll();
+  const timelineRef = useRef(null);
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 80%', 'end 60%']
+  });
+  const sceneRef = useRef(null);
+  const { scrollYProgress: sceneProgress } = useScroll({
+    target: sceneRef,
+    offset: ['start start', 'end end']
+  });
+  const [sceneReady, setSceneReady] = useState(false);
+  const lenisRef = useSmoothScroll();
+
+  // Mount the 3D scene only when its section approaches; skip entirely for reduced-motion
+  // and small/low-power screens (three.js is heavy).
+  useEffect(() => {
+    const el = sceneRef.current;
+    if (!el) return undefined;
+    if (reducedMotion || window.innerWidth < 600) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSceneReady(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reducedMotion]);
+
+  const handleNavClick = (event, id) => {
+    const lenis = lenisRef.current;
+    if (lenis) {
+      event.preventDefault();
+      lenis.scrollTo(`#${id}`, { offset: -70 });
+    }
+  };
+
+  // Keep the active pill in view within the horizontally-scrolling mobile nav.
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const active = nav.querySelector('a.active');
+    if (!active) return;
+    const target = active.offsetLeft - (nav.clientWidth - active.clientWidth) / 2;
+    nav.scrollTo({ left: Math.max(0, target), behavior: reducedMotion ? 'auto' : 'smooth' });
+  }, [activeSection, reducedMotion]);
 
   const handleContactSubmit = event => {
     event.preventDefault();
@@ -352,49 +578,64 @@ export default function App() {
     const subject = encodeURIComponent(`Portfolio inquiry from ${form.get('name') || 'Visitor'}`);
     const body = encodeURIComponent(`${form.get('message') || ''}\n\nFrom: ${form.get('name') || ''}\nEmail: ${form.get('email') || ''}`);
     window.location.href = `mailto:alisahil8210@gmail.com?subject=${subject}&body=${body}`;
+    setContactStatus('Opening your email app… if nothing happens, email alisahil8210@gmail.com directly.');
   };
 
   return (
     <main id="main">
-      <nav className="nav" aria-label="Primary navigation">
-        {navItems.map(item => (
-          <motion.a
-            className={activeSection === item.id ? 'active' : ''}
-            href={`#${item.id}`}
-            key={item.id}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.96 }}
-          >
-            {item.label}
-          </motion.a>
-        ))}
+      <motion.div className="scroll-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
+      <nav className="nav" aria-label="Primary navigation" ref={navRef}>
+        {navItems.map(item => {
+          const isActive = activeSection === item.id;
+          return (
+            <motion.a
+              className={isActive ? 'active' : ''}
+              href={`#${item.id}`}
+              key={item.id}
+              aria-current={isActive ? 'true' : undefined}
+              onClick={event => handleNavClick(event, item.id)}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.96 }}
+            >
+              {isActive && (
+                <motion.span
+                  className="nav-pill"
+                  layoutId="nav-pill"
+                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                />
+              )}
+              <span className="nav-label">{item.label}</span>
+            </motion.a>
+          );
+        })}
       </nav>
 
       <section className="hero" id="home">
         <div className="veil-wrap" aria-hidden="true">
           <DarkVeil
-            hueShift={-8}
-            noiseIntensity={0.035}
-            scanlineIntensity={0.05}
+            hueShift={0}
+            noiseIntensity={0.02}
+            scanlineIntensity={0.02}
             scanlineFrequency={1.7}
-            speed={0.65}
-            warpAmount={0.075}
-            resolutionScale={0.82}
+            speed={0.5}
+            warpAmount={0.08}
+            resolutionScale={0.72}
+            brightness={1.4}
           />
         </div>
         <div className="rays-wrap" aria-hidden="true">
           <SideRays
-            speed={1.65}
-            rayColor1="#f3cf61"
-            rayColor2="#6fb5ff"
-            intensity={1.45}
-            spread={1.7}
+            speed={1.5}
+            rayColor1="#ffce6a"
+            rayColor2="#ffe6b4"
+            intensity={1.6}
+            spread={1.4}
             origin="top-right"
             tilt={-8}
-            saturation={1.25}
-            blend={0.68}
-            falloff={1.9}
-            opacity={0.85}
+            saturation={1.2}
+            blend={0.5}
+            falloff={1.18}
+            opacity={0.62}
           />
         </div>
 
@@ -446,7 +687,8 @@ export default function App() {
         numCopies={5}
       />
 
-      <section id="about" className="reveal-band">
+      <section id="about" className="reveal-band" aria-labelledby="about-heading">
+        <h2 id="about-heading" className="sr-only">About</h2>
         <ScrollReveal baseOpacity={0.04} baseRotation={2} blurStrength={8} textClassName="statement">
           I am a full stack software developer from Ranchi with an MCA from BIT Mesra and a strong foundation in software
           engineering, enterprise application development, automation, and AI-powered business solutions.
@@ -481,14 +723,18 @@ export default function App() {
 
       <section id="experience" className="content-section dark-veil-section">
         <div className="section-veil" aria-hidden="true">
-          <DarkVeil hueShift={-12} speed={0.26} warpAmount={0.035} noiseIntensity={0.016} scanlineIntensity={0.02} resolutionScale={0.62} />
+          <DarkVeil hueShift={0} speed={0.24} warpAmount={0.035} noiseIntensity={0.015} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.1} />
         </div>
         <SectionHeading eyebrow="Experience" title="Enterprise software, automation, and applied AI" />
-        <motion.div className="timeline" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          {experience.map((item, index) => (
-            <ExperienceItem key={item.role} item={item} index={index} />
-          ))}
-        </motion.div>
+        <div className="timeline-wrap" ref={timelineRef}>
+          <span className="timeline-track" aria-hidden="true" />
+          <motion.span className="timeline-fill" style={{ scaleY: timelineProgress }} aria-hidden="true" />
+          <motion.div className="timeline" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
+            {experience.map((item, index) => (
+              <ExperienceItem key={item.role} item={item} index={index} />
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       <section id="skills" className="content-section light-section">
@@ -511,26 +757,30 @@ export default function App() {
 
       <section id="certifications" className="content-section">
         <div className="section-veil cert-veil" aria-hidden="true">
-          <DarkVeil hueShift={-4} speed={0.3} warpAmount={0.04} noiseIntensity={0.02} scanlineIntensity={0.02} resolutionScale={0.62} />
+          <DarkVeil hueShift={0} speed={0.28} warpAmount={0.04} noiseIntensity={0.02} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.1} />
         </div>
         <SectionHeading eyebrow="Certifications" title="Proof points across cloud, automation, and analytics" />
         <motion.div className="cert-grid" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
           {certifications.map((certification, index) => (
-            <motion.article
-              className="cert-card"
-              key={certification.title}
-              variants={revealUp}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.985 }}
-            >
-              <div className="cert-topline">
-                <span>0{index + 1}</span>
-                <span className="section-icon dark-icon"><Icon name={certification.icon} /></span>
-              </div>
-              <h3>{certification.title}</h3>
-            </motion.article>
+            <CertCard key={certification.title} certification={certification} index={index} />
           ))}
         </motion.div>
+      </section>
+
+      <section className="scene-band" ref={sceneRef} aria-labelledby="scene-heading">
+        <div className="scene-sticky">
+          <div className="scene-canvas">
+            {sceneReady && (
+              <Suspense fallback={null}>
+                <ScrollScene progress={sceneProgress} />
+              </Suspense>
+            )}
+          </div>
+          <div className="scene-caption">
+            <p className="project-label">In motion</p>
+            <h2 id="scene-heading">Software that keeps improving after launch.</h2>
+          </div>
+        </div>
       </section>
 
       <section id="contact" className="contact-section">
@@ -559,6 +809,7 @@ export default function App() {
             <textarea name="message" rows="5" required />
           </label>
           <button className="button primary" type="submit">Send Message</button>
+          <p className="form-status" role="status" aria-live="polite">{contactStatus}</p>
         </form>
       </section>
     </main>

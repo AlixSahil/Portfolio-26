@@ -8,6 +8,7 @@ import {
   useTransform,
   useVelocity
 } from 'motion/react';
+import useReducedMotion from '../../hooks/useReducedMotion.js';
 import './ScrollVelocity.css';
 
 function useElementWidth(ref) {
@@ -43,7 +44,8 @@ function VelocityText({
   parallaxClassName,
   scrollerClassName,
   parallaxStyle,
-  scrollerStyle
+  scrollerStyle,
+  hoverFactor = 1
 }) {
   const baseX = useMotionValue(0);
   const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
@@ -54,6 +56,8 @@ function VelocityText({
   const copyRef = useRef(null);
   const copyWidth = useElementWidth(copyRef);
   const directionFactor = useRef(1);
+  const smoothFactor = useRef(1);
+  const reducedMotion = useReducedMotion();
 
   const x = useTransform(baseX, value => {
     if (copyWidth === 0) return '0px';
@@ -61,7 +65,11 @@ function VelocityText({
   });
 
   useAnimationFrame((_, delta) => {
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+    // Reduced motion: hold the marquee still so the keywords stay readable, no scroll.
+    if (reducedMotion) return;
+    // Ease toward the hover target so the marquee slows/resumes smoothly on hover.
+    smoothFactor.current += (hoverFactor - smoothFactor.current) * 0.08;
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000) * smoothFactor.current;
     if (velocityFactor.get() < 0) directionFactor.current = -1;
     if (velocityFactor.get() > 0) directionFactor.current = 1;
     moveBy += directionFactor.current * moveBy * velocityFactor.get();
@@ -95,8 +103,14 @@ export default function ScrollVelocity({
   parallaxStyle,
   scrollerStyle
 }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <section className="scroll-velocity" aria-label="Scrolling technology highlights">
+    <section
+      className="scroll-velocity"
+      aria-label="Scrolling technology highlights"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       {texts.map((text, index) => (
         <VelocityText
           key={index}
@@ -111,6 +125,7 @@ export default function ScrollVelocity({
           scrollerClassName={scrollerClassName}
           parallaxStyle={parallaxStyle}
           scrollerStyle={scrollerStyle}
+          hoverFactor={hovered ? 0.2 : 1}
         >
           {text}
         </VelocityText>

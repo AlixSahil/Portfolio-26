@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { motion } from 'motion/react';
+import useReducedMotion from '../../hooks/useReducedMotion.js';
 
 const styles = {
   wrapper: {
@@ -45,6 +46,7 @@ export default function DecryptedText({
   const orderRef = useRef([]);
   const pointerRef = useRef(0);
   const intervalRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   const availableChars = useMemo(() => {
     return useOriginalCharsOnly
@@ -300,6 +302,13 @@ export default function DecryptedText({
 
   useEffect(() => {
     if (animateOn !== 'view' && animateOn !== 'inViewHover') return;
+    // Reduced motion: skip the scramble entirely and leave the plain, fully-revealed text.
+    if (reducedMotion) {
+      setDisplayText(text);
+      setIsDecrypted(true);
+      setHasAnimated(true);
+      return;
+    }
 
     const observerCallback = entries => {
       entries.forEach(entry => {
@@ -327,7 +336,7 @@ export default function DecryptedText({
         observer.unobserve(currentRef);
       }
     };
-  }, [animateOn, hasAnimated, triggerDecrypt]);
+  }, [animateOn, hasAnimated, triggerDecrypt, reducedMotion, text]);
 
   useEffect(() => {
     if (animateOn === 'click') {
