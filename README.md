@@ -4,6 +4,8 @@ This is my personal portfolio website, built to showcase my experience, skills, 
 
 The site focuses on a strong visual identity, smooth scrolling, section-based storytelling, and interactive motion effects. It is designed to feel more like a personal brand site than a plain resume page.
 
+Live portfolio: https://sahil-ali27.netlify.app/
+
 ## What It Includes
 
 - Hero section with an animated typing intro and an interactive WebGL backdrop
