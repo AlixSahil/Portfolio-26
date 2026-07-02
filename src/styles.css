@@ -477,7 +477,23 @@ h1 {
 }
 
 .statement {
-  max-width: 1180px;
+  max-width: 1160px;
+}
+
+/* Editorial serif treatment for the About statement — creative but subtle, and a
+   modest size. Compound selector so it wins over ScrollReveal's base sizing. */
+.scroll-reveal-text.statement {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-optical-sizing: auto;
+  font-size: clamp(1.25rem, 2.2vw, 1.95rem);
+  line-height: 1.4;
+  font-weight: 480;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.scroll-reveal-text.statement .word:first-child {
+  font-weight: 600;
 }
 
 .content-section,
@@ -578,6 +594,39 @@ h1 {
   transform: translateX(4px);
   border-color: rgba(243, 207, 97, 0.38);
   background: rgba(243, 207, 97, 0.06);
+}
+
+.profile-facts span {
+  gap: 13px;
+  font-weight: 600;
+}
+
+/* Small round gold-tinted badge holding each trait's icon — reads as a subtle logo.
+   Scoped under .profile-facts to override the chip styling the nested span inherits. */
+.profile-facts .fact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  min-height: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 50%;
+  background: rgba(168, 125, 28, 0.12);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.profile-facts .fact-icon .icon {
+  width: 17px;
+  height: 17px;
+  color: #a87d1c;
+}
+
+.profile-facts span:hover .fact-icon {
+  background: rgba(168, 125, 28, 0.22);
+  transform: rotate(-4deg);
 }
 
 .timeline-wrap {
@@ -783,9 +832,13 @@ li {
 }
 
 .skill-chip-icon {
-  width: 1.02em;
-  height: 1.02em;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+}
+
+.skill-chip-img {
+  object-fit: contain;
 }
 
 /* Give the blue accent a real, recurring job: project tech tags read blue,
@@ -801,8 +854,8 @@ li {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .project-card {
@@ -872,11 +925,11 @@ li {
 
 .project-card p {
   margin: 0;
-  line-height: 1.45;
-  font-size: 0.79rem;
+  line-height: 1.5;
+  font-size: 0.82rem;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -928,6 +981,18 @@ li {
   transition:
     border-color 220ms ease,
     box-shadow 220ms ease;
+  z-index: 1;
+}
+
+/* Full-width ambient glow so the panel reads as designed around the centred glyph */
+.project-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(130% 120% at 50% 40%, rgba(247, 244, 236, 0.07), transparent 62%),
+    radial-gradient(80% 140% at 50% 120%, rgba(243, 207, 97, 0.1), transparent 60%);
+  pointer-events: none;
 }
 
 .pv-art {
@@ -935,7 +1000,7 @@ li {
   z-index: 1;
   width: 100%;
   height: 100%;
-  padding: 24px 28px;
+  padding: 12px 22px;
   transition: transform 260ms ease;
 }
 
@@ -947,12 +1012,20 @@ li {
   background: linear-gradient(135deg, #101116, #273447);
 }
 
-.project-visual.vision {
-  background: linear-gradient(135deg, #101116, #25433f);
+.project-visual.platform {
+  background: linear-gradient(135deg, #101116, #241d3f);
 }
 
-.project-visual.chain {
-  background: linear-gradient(135deg, #101116, #3f344a);
+.project-visual.aarambh {
+  background: linear-gradient(135deg, #101116, #1d3f35);
+}
+
+.project-visual.icms {
+  background: linear-gradient(135deg, #101116, #1d333f);
+}
+
+.project-visual.event {
+  background: linear-gradient(135deg, #101116, #3f2f1d);
 }
 
 .tech-list span {
@@ -992,8 +1065,8 @@ li {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .cert-card {
@@ -1021,13 +1094,13 @@ li {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.62;
+  opacity: 0.78;
   pointer-events: none;
   mix-blend-mode: screen;
 }
 
 .cert-veil {
-  opacity: 0.48;
+  opacity: 0.66;
 }
 
 .dark-veil-section {
@@ -1048,6 +1121,49 @@ li {
   border-color: rgba(247, 244, 236, 0.14);
   background: rgba(247, 244, 236, 0.08);
   color: #f3cf61;
+}
+
+/* Issuer logo tile. --img shows the real logo on a light badge; --mono is the colored
+   monogram fallback. */
+.cert-logo {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  line-height: 1;
+  transition: transform 220ms ease;
+}
+
+.cert-logo--img {
+  background: #fff;
+  padding: 7px;
+  box-shadow:
+    0 10px 24px -8px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.cert-logo--img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.cert-logo--mono {
+  background: var(--brand);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.4rem;
+  box-shadow:
+    0 8px 20px -6px var(--brand),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.cert-card:hover .cert-logo {
+  transform: translateY(-2px) rotate(-3deg);
 }
 
 .cert-topline > span:first-child {
@@ -1110,6 +1226,19 @@ li {
   font-weight: 800;
 }
 
+.scene-tagline {
+  margin: 16px auto 0;
+  font-size: clamp(0.82rem, 1.3vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #f3cf61, #b083ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 .contact-section {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.7fr);
@@ -1119,7 +1248,7 @@ li {
 
 .contact-copy h2 {
   max-width: 620px;
-  margin: 0 0 28px;
+  margin: 0 0 16px;
   font-size: clamp(2.25rem, 4.8vw, 4.9rem);
   line-height: 1.0;
   letter-spacing: -0.02em;
@@ -1130,22 +1259,111 @@ li {
 .contact-links span {
   border-color: rgba(247, 244, 236, 0.14);
   color: rgba(247, 244, 236, 0.86);
+  gap: 13px;
+}
+
+.contact-intro {
+  margin: 0 0 26px;
+  max-width: 460px;
+  color: rgba(247, 244, 236, 0.6);
+  font-size: clamp(0.95rem, 1.4vw, 1.06rem);
+  line-height: 1.55;
+}
+
+/* Icon badge on each contact row (scoped so it overrides the chip styling the
+   nested span would otherwise inherit). */
+.contact-links .contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  min-height: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 9px;
+  background: rgba(247, 244, 236, 0.06);
+  color: #f3cf61;
+  transition:
+    transform 200ms ease,
+    background 200ms ease,
+    color 200ms ease;
+}
+
+.contact-links .contact-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-links .contact-icon svg:not(.icon) {
+  width: 17px;
+  height: 17px;
+}
+
+.contact-links a:hover .contact-icon,
+.contact-links a:focus-visible .contact-icon {
+  background: rgba(243, 207, 97, 0.16);
+  color: #f7d777;
+  transform: scale(1.08) rotate(-4deg);
 }
 
 .contact-form {
   display: grid;
   gap: 16px;
   align-content: start;
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid rgba(247, 244, 236, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(247, 244, 236, 0.05), rgba(247, 244, 236, 0.012));
+  box-shadow: 0 30px 70px -46px rgba(0, 0, 0, 0.85);
 }
 
 .contact-form label {
   display: grid;
-  gap: 8px;
+  gap: 9px;
+}
+
+.field-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   color: rgba(247, 244, 236, 0.78);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.field-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  background: rgba(243, 207, 97, 0.1);
+  color: #f3cf61;
+  transition:
+    background 200ms ease,
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.field-icon .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.contact-form label:focus-within .field-icon {
+  background: rgba(243, 207, 97, 0.2);
+  color: #f7d777;
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.contact-form label:focus-within .field-label {
+  color: rgba(247, 244, 236, 0.96);
 }
 
 .contact-form input,
@@ -1170,8 +1388,35 @@ li {
   box-shadow: 0 0 0 4px rgba(243, 207, 97, 0.1);
 }
 
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(247, 244, 236, 0.32);
+}
+
 .contact-form textarea {
   resize: vertical;
+}
+
+/* Send button: label + paper-plane that lifts above the sheen and nudges on hover */
+.contact-submit {
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.contact-submit > * {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-submit .icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 240ms ease;
+}
+
+.contact-submit:hover .icon,
+.contact-submit:focus-visible .icon {
+  transform: translate(4px, -4px);
 }
 
 .encrypted {
@@ -1197,16 +1442,32 @@ li {
 }
 
 @media (max-width: 1060px) {
-  .skills-grid,
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Projects: 3-up (two rows of three) on desktop, 2-up on tablet, stacked on phones */
+@media (max-width: 900px) {
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Certs hold a single row of five down to laptop widths, then 2-up, then stacked */
+@media (max-width: 1000px) {
   .cert-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Projects keep all four on one line down to typical laptop widths, then 2-up */
-@media (max-width: 900px) {
+@media (max-width: 560px) {
   .project-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1274,9 +1535,7 @@ li {
     width: 100%;
   }
 
-  .skills-grid,
-  .cert-grid,
-  .project-grid {
+  .skills-grid {
     grid-template-columns: 1fr;
   }
 

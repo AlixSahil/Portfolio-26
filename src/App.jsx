@@ -4,8 +4,9 @@ import {
   SiReact, SiJavascript, SiTypescript, SiHtml5, SiCss, SiTailwindcss,
   SiNodedotjs, SiExpress, SiDjango, SiFastapi, SiPython, SiC,
   SiPostgresql, SiMysql, SiMongodb, SiFirebase, SiGit, SiDocker,
-  SiWordpress, SiClaude, SiGithubcopilot, SiN8N
+  SiWordpress, SiClaude, SiGithubcopilot, SiN8N, SiOpenjdk, SiGoogle, SiNextdotjs
 } from 'react-icons/si';
+import { FaGithub, FaLinkedinIn } from 'react-icons/fa6';
 import useReducedMotion from './hooks/useReducedMotion.js';
 import useTilt from './hooks/useTilt.js';
 import useSmoothScroll from './hooks/useSmoothScroll.js';
@@ -61,7 +62,7 @@ const experience = [
 
 const skillGroups = [
   { title: 'Frontend', icon: 'layout', skills: ['React', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS'] },
-  { title: 'Backend', icon: 'api', skills: ['Node.js', 'Express', 'Django', 'FastAPI'] },
+  { title: 'Backend', icon: 'api', skills: ['Node.js', 'Express', 'Next.js', 'Django', 'FastAPI'] },
   { title: 'Languages', icon: 'code', skills: ['Python', 'Java', 'C', 'SQL', 'PL/SQL'] },
   { title: 'Databases', icon: 'db', skills: ['Oracle', 'PostgreSQL', 'MySQL', 'MongoDB', 'Firebase'] },
   { title: 'Software Engineering', icon: 'system', skills: ['OOP', 'DSA', 'System Design', 'SDLC', 'Optimization'] },
@@ -73,56 +74,83 @@ const skillGroups = [
 // When both are null the card shows a `note` tag instead of faking a link.
 const projects = [
   {
-    title: 'Enterprise Inventory Management System',
-    technologies: ['Oracle APEX', 'Oracle Database', 'PL/SQL'],
+    title: 'BEAT 2.0 — Distribution & Field-Sales Management Platform',
+    technologies: ['React', 'NestJS', 'TypeScript', 'PostgreSQL', 'Docker', 'nginx'],
     description:
-      'Enterprise inventory management platform with inventory tracking, stock monitoring, workflow automation, QR-based processes, dashboards, alerts, and reporting.',
-    features: ['Stock monitoring', 'QR workflows', 'Automated alerts', 'Operational dashboards'],
-    tone: 'inventory',
+      'B2B distribution & field-sales platform (DMS/SFA) for FMCG — full distributor-to-invoice lifecycle with beat routes, DSR dashboards, and Tally integration.',
+    features: ['Distribution lifecycle', 'Beat / route management', 'Tally integration', 'Premium UI system'],
+    tone: 'platform',
     repo: null,
     demo: null,
-    note: 'Enterprise · internal'
+    note: 'Minu Marketing Pvt Ltd.'
   },
   {
-    title: 'Employee Survey Management System',
-    technologies: ['Oracle APEX', 'Oracle Database', 'Email Automation'],
+    title: 'Aarambh — Digital Onboarding System',
+    technologies: ['Oracle APEX', 'Oracle Database', 'PL/SQL', 'ORDS', 'TypeUI', 'JavaScript'],
     description:
-      'Department-wise survey platform featuring authentication, email automation, response tracking, reporting, dashboards, and workflow management.',
-    features: ['Authentication', 'Response tracking', 'Email automation', 'Department reports'],
+      'A 16-step digital onboarding workflow automating 22 HR documents — registration, multi-level approvals, and progress tracking behind role-based access.',
+    features: ['16-step workflow', 'Role-based access', 'Document management', 'Approval workflows'],
+    tone: 'aarambh',
+    repo: null,
+    demo: null,
+    note: 'Aditya Birla Group Hindalco'
+  },
+  {
+    title: 'ICMS — Calibration & Maintenance',
+    technologies: ['Oracle APEX', 'Oracle Database', 'PL/SQL', 'REST APIs', 'Tailwind CSS', 'JavaScript'],
+    description:
+      'Centralized instrument calibration and maintenance tracking with automated scheduling, deviation analysis, and audit-ready reporting.',
+    features: ['Calibration tracking', 'Automated scheduling', 'Deviation analysis', 'Audit reporting'],
+    tone: 'icms',
+    repo: null,
+    demo: null,
+    note: 'Aditya Birla Group Hindalco'
+  },
+  {
+    title: 'Kund Vaani — Feedback System',
+    technologies: ['Oracle APEX', 'Oracle Database', 'SQL', 'PL/SQL', 'TypeUI', 'jQuery'],
+    description:
+      'Centralized employee feedback platform with automated survey scheduling, custom SQL reporting, and real-time dashboards.',
+    features: ['Survey scheduling', 'SQL reporting', 'Real-time dashboards', 'Feedback analytics'],
     tone: 'survey',
     repo: null,
     demo: null,
-    note: 'Enterprise · internal'
+    note: 'Aditya Birla Group Hindalco'
   },
   {
-    title: 'Face Recognition Attendance System',
-    technologies: ['Python', 'OpenCV', 'Flask', 'SQLite'],
+    title: 'Smart Inventory Tracker',
+    technologies: ['Oracle APEX', 'Oracle Database', 'PL/SQL', 'ORDS', 'Tailwind CSS', 'jQuery'],
     description:
-      'Real-time facial recognition attendance platform with automated attendance tracking and analytics dashboard.',
-    features: ['Face recognition', 'Attendance logs', 'Flask dashboard', 'SQLite storage'],
-    tone: 'vision',
+      'Real-time inventory tracking with automated alerts and operational dashboards for end-to-end stock visibility.',
+    features: ['Real-time alerts', 'Stock dashboards', 'Inventory tracking', 'Operational visibility'],
+    tone: 'inventory',
     repo: null,
     demo: null,
-    note: 'Personal project'
+    note: 'Aditya Birla Group Hindalco'
   },
   {
-    title: 'Blockchain Document Verification',
-    technologies: ['Solidity', 'IPFS', 'MetaMask'],
+    title: 'Event Registration System',
+    technologies: ['React', 'TypeScript', 'Firebase', 'Tailwind CSS'],
     description:
-      'Blockchain-powered document verification system ensuring secure and tamper-proof digital verification.',
-    features: ['Smart contracts', 'IPFS storage', 'Wallet flow', 'Tamper-proof verification'],
-    tone: 'chain',
+      'QR-based event registration platform that accelerated on-site check-in and streamlined event operations.',
+    features: ['QR registration', 'Fast check-in', 'Firebase backend', 'Responsive UI'],
+    tone: 'event',
     repo: null,
     demo: null,
-    note: 'Personal project'
+    note: 'Aditya Birla Group Hindalco'
   }
 ];
 
+// Each cert shows the issuer's real logo (loaded from an authoritative logo service by
+// domain). mark/brand render a colored monogram tile as an automatic fallback if the
+// logo can't load. To use higher-res official artwork, drop a file in /public/logos and
+// point `logo` at it (e.g. logo: '/logos/oracle.svg') — it takes precedence over `domain`.
 const certifications = [
-  { title: 'Oracle APEX Cloud Developer Professional', icon: 'apex' },
-  { title: 'Oracle Cloud Infrastructure 2025 Foundations Associate', icon: 'cloud' },
-  { title: 'Google IT Automation with Python', icon: 'automation' },
-  { title: 'Deloitte Data Analytics Job Simulation', icon: 'chart' }
+  { title: 'Oracle APEX Cloud Developer Professional', issuer: 'Oracle', logo: '/logos/oracle.svg', slug: 'oracle', domain: 'oracle.com', mark: 'O', brand: '#C74634' },
+  { title: 'Oracle Cloud Infrastructure 2025 Foundations Associate', issuer: 'Oracle', logo: '/logos/oracle.svg', slug: 'oracle', domain: 'oracle.com', mark: 'O', brand: '#C74634' },
+  { title: 'Google IT Automation with Python', issuer: 'Google', logo: '/logos/google.svg', slug: 'google', domain: 'google.com', mark: 'G', brand: '#4285F4' },
+  { title: 'Deloitte Data Analytics Job Simulation', issuer: 'Deloitte', logo: '/logos/deloitte.jpeg', slug: 'deloitte', domain: 'deloitte.com', mark: 'D', brand: '#86BC25' },
+  { title: 'McKinsey.org Forward Program', issuer: 'McKinsey.org', logo: '/logos/mckinsey.png', slug: 'mckinsey', domain: 'mckinsey.org', mark: 'M', brand: '#00A9CE' }
 ];
 
 const navItems = [
@@ -170,7 +198,15 @@ function Icon({ name }) {
     tools: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z',
     apex: 'M12 3 3 19h18L12 3ZM12 8v5M12 16h.01',
     cloud: 'M7 18h10a4 4 0 0 0 .4-8 6 6 0 0 0-11.1 1.5A3.5 3.5 0 0 0 7 18Z',
-    automation: 'M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7M18 4v5h-5M6 20v-5h5'
+    automation: 'M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7M18 4v5h-5M6 20v-5h5',
+    bolt: 'M13 2 4 14h6l-1 8 9-12h-6l1-8Z',
+    search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14ZM20 21l-4.35-4.35',
+    mail: 'M3.5 6h17a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1ZM3 7.5l9 6 9-6',
+    phone: 'M6.5 3h3l1.6 5-2.2 1.3a12 12 0 0 0 5 5l1.3-2.2 5 1.6v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z',
+    pin: 'M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12ZM12 12a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2Z',
+    user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM5 21a7 7 0 0 1 14 0',
+    message: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z',
+    send: 'M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z'
   };
 
   return (
@@ -297,73 +333,213 @@ function ExperienceItem({ item, index }) {
   );
 }
 
-// Distinct, imageless schematic per project so the four cards stop looking identical.
+// Distinct, glowing schematic per project — a focal glyph that tells each project's
+// story (network hub, onboarding path, calibration gauge, ticket, crates, feedback).
+// Gradient/filter ids are tone-prefixed so the six inline SVGs never collide.
 const projectArt = {
   inventory: (
     <>
-      <rect x="24" y="30" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
-      <rect x="24" y="30" width="84" height="9" rx="4.5" fill="#f3cf61" />
-      <rect x="24" y="55" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
-      <rect x="24" y="55" width="52" height="9" rx="4.5" fill="#6fb5ff" />
-      <rect x="24" y="80" width="118" height="9" rx="4.5" fill="rgba(247,244,236,0.14)" />
-      <rect x="24" y="80" width="100" height="9" rx="4.5" fill="#f3cf61" />
-      <rect x="168" y="30" width="48" height="48" rx="7" fill="none" stroke="rgba(247,244,236,0.3)" strokeWidth="2" />
-      <rect x="176" y="38" width="11" height="11" rx="2" fill="#f3cf61" />
-      <rect x="197" y="38" width="11" height="11" rx="2" fill="#f3cf61" />
-      <rect x="176" y="59" width="11" height="11" rx="2" fill="#f3cf61" />
-      <rect x="197" y="59" width="11" height="11" rx="2" fill="#6fb5ff" />
+      <defs>
+        <radialGradient id="inventory-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="inventory-box" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.12" />
+        </linearGradient>
+      </defs>
+      {/* stacked crates */}
+      <g stroke="rgba(247,244,236,0.4)" strokeWidth="1.6">
+        <rect x="42" y="62" width="36" height="32" rx="4" fill="url(#inventory-box)" />
+        <rect x="82" y="62" width="36" height="32" rx="4" fill="url(#inventory-box)" />
+        <rect x="62" y="30" width="36" height="32" rx="4" fill="url(#inventory-box)" />
+      </g>
+      <g stroke="rgba(247,244,236,0.32)" strokeWidth="1.5">
+        <line x1="60" y1="62" x2="60" y2="94" />
+        <line x1="100" y1="62" x2="100" y2="94" />
+        <line x1="80" y1="30" x2="80" y2="62" />
+      </g>
+      {/* real-time trend line */}
+      <polyline points="128,86 148,70 166,78 188,50" fill="none" stroke="#6fb5ff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="128" cy="86" r="3.2" fill="#6fb5ff" />
+      <circle cx="148" cy="70" r="3.2" fill="#6fb5ff" />
+      <circle cx="166" cy="78" r="3.2" fill="#6fb5ff" />
+      {/* glowing alert badge at the peak */}
+      <circle cx="188" cy="50" r="18" fill="url(#inventory-halo)" />
+      <circle cx="188" cy="50" r="8" fill="#12131a" stroke="#f3cf61" strokeWidth="2.2" />
+      <line x1="188" y1="45" x2="188" y2="51" stroke="#f3cf61" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="188" cy="55" r="1.4" fill="#f3cf61" />
     </>
   ),
   survey: (
     <>
-      <rect x="28" y="66" width="16" height="30" rx="3" fill="#f3cf61" />
-      <rect x="52" y="52" width="16" height="44" rx="3" fill="#6fb5ff" />
-      <rect x="76" y="40" width="16" height="56" rx="3" fill="#f3cf61" />
-      <rect x="100" y="28" width="16" height="68" rx="3" fill="#6fb5ff" />
-      <g stroke="rgba(247,244,236,0.4)" strokeWidth="2" fill="none" strokeLinecap="round">
-        <rect x="150" y="34" width="13" height="13" rx="3" />
-        <line x1="172" y1="40.5" x2="214" y2="40.5" />
-        <rect x="150" y="58" width="13" height="13" rx="3" />
-        <line x1="172" y1="64.5" x2="206" y2="64.5" />
-        <rect x="150" y="82" width="13" height="13" rx="3" />
-        <line x1="172" y1="88.5" x2="214" y2="88.5" />
+      <defs>
+        <radialGradient id="survey-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="survey-bubble" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.05" />
+        </linearGradient>
+      </defs>
+      {/* feedback speech bubble ("vaani" = voice) */}
+      <path
+        d="M50 30 h108 a14 14 0 0 1 14 14 v22 a14 14 0 0 1 -14 14 h-70 l-16 16 v-16 h-16 a14 14 0 0 1 -14 -14 v-22 a14 14 0 0 1 14 -14 z"
+        fill="url(#survey-bubble)"
+        stroke="rgba(247,244,236,0.3)"
+        strokeWidth="1.6"
+      />
+      {/* glowing rating star */}
+      <circle cx="78" cy="56" r="19" fill="url(#survey-halo)" />
+      <path d="M78 44 L80.8 52.1 L89.4 52.3 L82.6 57.5 L85.1 65.7 L78 60.8 L71 65.7 L73.4 57.5 L66.6 52.3 L75.2 52.1 Z" fill="#f3cf61" />
+      {/* response dots + line */}
+      <g fill="#6fb5ff">
+        <circle cx="112" cy="49" r="3.2" />
+        <circle cx="124" cy="49" r="3.2" />
+        <circle cx="136" cy="49" r="3.2" />
+        <circle cx="148" cy="49" r="3.2" />
       </g>
-      <g stroke="#f3cf61" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M153 40.5 l2.5 3 l4.5 -6" />
-        <path d="M153 64.5 l2.5 3 l4.5 -6" />
+      <line x1="112" y1="63" x2="152" y2="63" stroke="rgba(247,244,236,0.4)" strokeWidth="2.4" strokeLinecap="round" />
+    </>
+  ),
+  aarambh: (
+    <>
+      <defs>
+        <radialGradient id="aarambh-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="aarambh-step" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.6" />
+        </linearGradient>
+      </defs>
+      {/* ascending onboarding steps */}
+      <g fill="url(#aarambh-step)" stroke="rgba(247,244,236,0.3)" strokeWidth="1.4">
+        <rect x="28" y="74" width="34" height="22" rx="4" />
+        <rect x="68" y="58" width="34" height="38" rx="4" />
+        <rect x="108" y="42" width="34" height="54" rx="4" />
+      </g>
+      {/* rising dotted path to completion */}
+      <path d="M40 70 L84 54 L124 38 L170 32" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1.5 6" />
+      {/* glowing completion medallion */}
+      <circle cx="178" cy="32" r="27" fill="url(#aarambh-halo)" />
+      <circle cx="178" cy="32" r="16" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
+      <path d="M170 32 l5.5 5.5 l9.5 -12" fill="none" stroke="#f3cf61" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  icms: (
+    <>
+      <defs>
+        <linearGradient id="icms-arc" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#6fb5ff" />
+          <stop offset="100%" stopColor="#f3cf61" />
+        </linearGradient>
+        <radialGradient id="icms-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {/* gradient gauge arc */}
+      <path d="M64 92 A56 56 0 0 1 176 92" fill="none" stroke="url(#icms-arc)" strokeWidth="5" strokeLinecap="round" />
+      {/* ticks */}
+      <g stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round">
+        <line x1="72" y1="64" x2="78" y2="68" />
+        <line x1="120" y1="37" x2="120" y2="45" />
+        <line x1="168" y1="64" x2="162" y2="68" />
+      </g>
+      {/* needle + glow */}
+      <circle cx="120" cy="92" r="20" fill="url(#icms-halo)" />
+      <line x1="120" y1="92" x2="151" y2="58" stroke="#f3cf61" strokeWidth="3.5" strokeLinecap="round" />
+      <circle cx="120" cy="92" r="6.5" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
+      {/* small gear */}
+      <g transform="translate(58,46)" stroke="#6fb5ff" strokeWidth="2" fill="none">
+        <circle r="7.5" />
+        <g strokeLinecap="round">
+          <line x1="0" y1="-12" x2="0" y2="-9" />
+          <line x1="0" y1="9" x2="0" y2="12" />
+          <line x1="-12" y1="0" x2="-9" y2="0" />
+          <line x1="9" y1="0" x2="12" y2="0" />
+          <line x1="-8.5" y1="-8.5" x2="-6.4" y2="-6.4" />
+          <line x1="6.4" y1="6.4" x2="8.5" y2="8.5" />
+        </g>
       </g>
     </>
   ),
-  vision: (
+  event: (
     <>
-      <g stroke="#6fb5ff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M74 32 h-18 v18" />
-        <path d="M166 32 h18 v18" />
-        <path d="M74 92 h-18 v-18" />
-        <path d="M166 92 h18 v-18" />
+      <defs>
+        <radialGradient id="event-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="event-ticket" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      {/* ticket body */}
+      <rect x="44" y="34" width="152" height="52" rx="10" fill="url(#event-ticket)" stroke="rgba(247,244,236,0.3)" strokeWidth="1.6" />
+      {/* perforation stub divider */}
+      <line x1="118" y1="38" x2="118" y2="82" stroke="rgba(247,244,236,0.3)" strokeWidth="1.6" strokeDasharray="3 4" />
+      {/* QR block */}
+      <g fill="#f3cf61">
+        <rect x="58" y="46" width="7" height="7" rx="1" />
+        <rect x="69" y="46" width="7" height="7" rx="1" />
+        <rect x="58" y="57" width="7" height="7" rx="1" />
       </g>
-      <circle cx="104" cy="54" r="3.4" fill="#f3cf61" />
-      <circle cx="136" cy="54" r="3.4" fill="#f3cf61" />
-      <path d="M104 74 q16 11 32 0" stroke="#f3cf61" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-      <line x1="56" y1="62" x2="184" y2="62" stroke="rgba(111,181,255,0.45)" strokeWidth="1.5" strokeDasharray="5 5" />
+      <g fill="#6fb5ff">
+        <rect x="80" y="46" width="7" height="7" rx="1" />
+        <rect x="69" y="57" width="7" height="7" rx="1" />
+        <rect x="80" y="57" width="7" height="7" rx="1" />
+        <rect x="58" y="68" width="7" height="7" rx="1" />
+        <rect x="80" y="68" width="7" height="7" rx="1" />
+      </g>
+      {/* stub detail lines */}
+      <g stroke="rgba(247,244,236,0.4)" strokeWidth="2.4" strokeLinecap="round">
+        <line x1="132" y1="48" x2="180" y2="48" />
+        <line x1="132" y1="58" x2="170" y2="58" />
+      </g>
+      {/* glowing scan check */}
+      <circle cx="156" cy="72" r="15" fill="url(#event-halo)" />
+      <path d="M149 71 l5 5 l9.5 -11.5" fill="none" stroke="#f3cf61" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
     </>
   ),
-  chain: (
+  platform: (
     <>
-      <g fill="none" strokeWidth="2.5" strokeLinecap="round">
-        <rect x="26" y="42" width="46" height="40" rx="8" stroke="#f3cf61" />
-        <rect x="97" y="42" width="46" height="40" rx="8" stroke="#6fb5ff" />
-        <rect x="168" y="42" width="46" height="40" rx="8" stroke="#f3cf61" />
-        <line x1="72" y1="62" x2="97" y2="62" stroke="rgba(247,244,236,0.4)" />
-        <line x1="143" y1="62" x2="168" y2="62" stroke="rgba(247,244,236,0.4)" />
+      <defs>
+        <radialGradient id="platform-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="platform-link" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.8" />
+        </linearGradient>
+      </defs>
+      {/* glow behind the distribution hub */}
+      <circle cx="120" cy="60" r="42" fill="url(#platform-halo)" />
+      {/* links out to retailers / routes */}
+      <g stroke="url(#platform-link)" strokeWidth="2" strokeLinecap="round">
+        <line x1="120" y1="60" x2="50" y2="30" />
+        <line x1="120" y1="60" x2="40" y2="82" />
+        <line x1="120" y1="60" x2="196" y2="28" />
+        <line x1="120" y1="60" x2="204" y2="80" />
+        <line x1="120" y1="60" x2="120" y2="102" />
       </g>
-      <g stroke="rgba(247,244,236,0.34)" strokeWidth="2" strokeLinecap="round">
-        <line x1="34" y1="56" x2="58" y2="56" />
-        <line x1="34" y1="66" x2="52" y2="66" />
-        <line x1="105" y1="56" x2="129" y2="56" />
-        <line x1="105" y1="66" x2="123" y2="66" />
+      {/* satellite nodes */}
+      <g fill="#6fb5ff">
+        <circle cx="50" cy="30" r="5.5" />
+        <circle cx="40" cy="82" r="5.5" />
+        <circle cx="196" cy="28" r="5.5" />
+        <circle cx="204" cy="80" r="5.5" />
+        <circle cx="120" cy="102" r="5.5" />
       </g>
-      <path d="M180 62 l4 5 l8 -10" stroke="#f3cf61" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* central distributor hub */}
+      <circle cx="120" cy="60" r="14" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
+      <circle cx="120" cy="60" r="5" fill="#f3cf61" />
     </>
   )
 };
@@ -434,30 +610,46 @@ function FallbackSkillIcon(props) {
   );
 }
 
-// [icon, brand colour]. Skills not listed fall back to the neutral cube in the chip colour.
+// [icon, brand colour]. A null icon uses the neutral cube tinted with the given colour
+// (for skills whose vendor logo is trademark-restricted, or abstract concepts). Skills
+// with no entry at all fall back to the neutral grey cube.
 const skillIcons = {
   React: [SiReact, '#61DAFB'],
-  JavaScript: [SiJavascript, '#E0B400'],
+  JavaScript: [SiJavascript, '#D9AE00'],
   TypeScript: [SiTypescript, '#3178C6'],
   HTML: [SiHtml5, '#E34F26'],
   CSS: [SiCss, '#1572B6'],
   'Tailwind CSS': [SiTailwindcss, '#06B6D4'],
   'Node.js': [SiNodedotjs, '#5FA04E'],
   Express: [SiExpress, '#4B5563'],
+  'Next.js': [SiNextdotjs, '#111111'],
   Django: [SiDjango, '#0C4B33'],
   FastAPI: [SiFastapi, '#009688'],
   Python: [SiPython, '#3776AB'],
+  Java: [SiOpenjdk, '#E76F00'],
   C: [SiC, '#5A7FA0'],
+  SQL: [null, '#DE7C00'],
+  'PL/SQL': [null, '#C74634'],
+  Oracle: [null, '#C74634'],
   PostgreSQL: [SiPostgresql, '#4169E1'],
   MySQL: [SiMysql, '#00618A'],
   MongoDB: [SiMongodb, '#47A248'],
-  Firebase: [SiFirebase, '#E8A400'],
+  Firebase: [SiFirebase, '#D98A00'],
   Git: [SiGit, '#F05032'],
   Docker: [SiDocker, '#2496ED'],
+  'Oracle APEX': [null, '#C74634', '/logos/oracle.svg'],
   WordPress: [SiWordpress, '#21759B'],
+  VPS: [null, '#4E9A51'],
   Claude: [SiClaude, '#D97757'],
-  'GitHub Copilot': [SiGithubcopilot, '#4B5563'],
-  n8n: [SiN8N, '#EA4B71']
+  ChatGPT: [null, '#10A37F'],
+  'GitHub Copilot': [SiGithubcopilot, '#6E7681'],
+  'Google Antigravity': [SiGoogle, '#4285F4'],
+  n8n: [SiN8N, '#EA4B71'],
+  OOP: [null, '#7AA5F0'],
+  DSA: [null, '#B98BE0'],
+  'System Design': [null, '#5FBFA8'],
+  SDLC: [null, '#E0A55F'],
+  Optimization: [null, '#E0788B']
 };
 
 function SkillGroup({ group }) {
@@ -481,17 +673,46 @@ function SkillGroup({ group }) {
       <div className="skill-list">
         {group.skills.map(skill => {
           const entry = skillIcons[skill];
-          const SkillIcon = entry ? entry[0] : FallbackSkillIcon;
+          const imgSrc = entry && entry[2];
+          const SkillIcon = entry && entry[0] ? entry[0] : FallbackSkillIcon;
           const color = entry ? entry[1] : '#9c968a';
           return (
             <span key={skill}>
-              <SkillIcon className="skill-chip-icon" style={color ? { color } : undefined} aria-hidden="true" />
+              {imgSrc ? (
+                <img className="skill-chip-icon skill-chip-img" src={imgSrc} alt="" aria-hidden="true" />
+              ) : (
+                <SkillIcon className="skill-chip-icon" style={color ? { color } : undefined} aria-hidden="true" />
+              )}
               <DecryptedText text={skill} animateOn="view" sequential speed={42} encryptedClassName="encrypted" />
             </span>
           );
         })}
       </div>
     </motion.article>
+  );
+}
+
+// Real issuer logo on a light badge tile. Tries the local file in /public/logos first
+// (both .svg and .png so any format you drop in just works), then an explicit logo URL,
+// then the live favicon service, and finally the colored monogram if nothing loads.
+function CertLogo({ cert }) {
+  const sources = [];
+  if (cert.logo) sources.push(cert.logo);
+  if (cert.slug) ['svg', 'png', 'jpg', 'jpeg'].forEach(ext => sources.push(`/logos/${cert.slug}.${ext}`));
+  if (cert.domain) sources.push(`https://www.google.com/s2/favicons?domain=${cert.domain}&sz=128`);
+  const [idx, setIdx] = useState(0);
+
+  if (idx >= sources.length) {
+    return (
+      <span className="cert-logo cert-logo--mono" style={{ '--brand': cert.brand }} title={cert.issuer} aria-hidden="true">
+        {cert.mark}
+      </span>
+    );
+  }
+  return (
+    <span className="cert-logo cert-logo--img" title={cert.issuer}>
+      <img src={sources[idx]} alt={`${cert.issuer} logo`} loading="lazy" onError={() => setIdx(i => i + 1)} />
+    </span>
   );
 }
 
@@ -508,7 +729,7 @@ function CertCard({ certification, index }) {
     >
       <div className="cert-topline">
         <span>0{index + 1}</span>
-        <span className="section-icon dark-icon"><Icon name={certification.icon} /></span>
+        <CertLogo cert={certification} />
       </div>
       <h3>{certification.title}</h3>
     </motion.article>
@@ -704,8 +925,8 @@ export default function App() {
       <section id="about" className="reveal-band" aria-labelledby="about-heading">
         <h2 id="about-heading" className="sr-only">About</h2>
         <ScrollReveal baseOpacity={0.04} baseRotation={2} blurStrength={8} textClassName="statement">
-          I am a full stack software developer from Ranchi with an MCA from BIT Mesra and a strong foundation in software
-          engineering, enterprise application development, automation, and AI-powered business solutions.
+          Full Stack Software Developer based in Ranchi with an MCA from BIT Mesra, passionate about building scalable
+          software that drives business efficiency and digital transformation.
         </ScrollReveal>
       </section>
 
@@ -728,16 +949,16 @@ export default function App() {
           whileInView="visible"
           viewport={revealViewport}
         >
-          <motion.span variants={revealUp}>Ranchi, Jharkhand, India</motion.span>
-          <motion.span variants={revealUp}>MCA, BIT Mesra</motion.span>
-          <motion.span variants={revealUp}>Enterprise Applications</motion.span>
-          <motion.span variants={revealUp}>Automation + AI Systems</motion.span>
+          <motion.span variants={revealUp}><span className="fact-icon"><Icon name="code" /></span>Clean Code</motion.span>
+          <motion.span variants={revealUp}><span className="fact-icon"><Icon name="bolt" /></span>Quick Learner</motion.span>
+          <motion.span variants={revealUp}><span className="fact-icon"><Icon name="chart" /></span>Analytical Thinking</motion.span>
+          <motion.span variants={revealUp}><span className="fact-icon"><Icon name="search" /></span>Attention to Detail</motion.span>
         </motion.div>
       </section>
 
       <section id="experience" className="content-section dark-veil-section">
         <div className="section-veil" aria-hidden="true">
-          <DarkVeil hueShift={0} speed={0.24} warpAmount={0.035} noiseIntensity={0.015} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.1} />
+          <DarkVeil hueShift={0} speed={0.24} warpAmount={0.035} noiseIntensity={0.015} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.5} />
         </div>
         <SectionHeading eyebrow="Experience" title="Enterprise software, automation, and applied AI" />
         <div className="timeline-wrap" ref={timelineRef}>
@@ -769,9 +990,9 @@ export default function App() {
         </motion.div>
       </section>
 
-      <section id="certifications" className="content-section">
+      <section id="certifications" className="content-section dark-veil-section">
         <div className="section-veil cert-veil" aria-hidden="true">
-          <DarkVeil hueShift={0} speed={0.28} warpAmount={0.04} noiseIntensity={0.02} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.1} />
+          <DarkVeil hueShift={0} speed={0.28} warpAmount={0.04} noiseIntensity={0.02} scanlineIntensity={0.02} resolutionScale={0.5} brightness={1.5} />
         </div>
         <SectionHeading eyebrow="Certifications" title="Proof points across cloud, automation, and analytics" />
         <motion.div className="cert-grid" variants={staggerGroup} initial="hidden" whileInView="visible" viewport={revealViewport}>
@@ -793,6 +1014,7 @@ export default function App() {
           <div className="scene-caption">
             <p className="project-label">In motion</p>
             <h2 id="scene-heading">Software that keeps improving after launch.</h2>
+            <p className="scene-tagline">Deploy. Learn. Refine. Repeat.</p>
           </div>
         </div>
       </section>
@@ -801,28 +1023,44 @@ export default function App() {
         <div className="contact-copy">
           <p className="project-label">Contact</p>
           <h2>Let's build something useful.</h2>
+          <p className="contact-intro">
+            Open to full-time roles, freelance projects, and good conversations. Reach out on any channel — I usually reply within a day.
+          </p>
           <div className="contact-links">
-            <motion.a href="mailto:alisahil8210@gmail.com" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>alisahil8210@gmail.com</motion.a>
-            <motion.a href="tel:+918210672479" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>+91 8210672479</motion.a>
-            <span>Ranchi, Jharkhand</span>
-            <motion.a href="https://github.com/AlixSahil" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>GitHub</motion.a>
-            <motion.a href="https://linkedin.com/in/sahilali8210" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>LinkedIn</motion.a>
+            <motion.a href="mailto:alisahil8210@gmail.com" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>
+              <span className="contact-icon"><Icon name="mail" /></span>alisahil8210@gmail.com
+            </motion.a>
+            <motion.a href="tel:+918210672479" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>
+              <span className="contact-icon"><Icon name="phone" /></span>+91 8210672479
+            </motion.a>
+            <span>
+              <span className="contact-icon"><Icon name="pin" /></span>Ranchi, Jharkhand
+            </span>
+            <motion.a href="https://github.com/AlixSahil" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>
+              <span className="contact-icon"><FaGithub /></span>GitHub
+            </motion.a>
+            <motion.a href="https://linkedin.com/in/sahilali8210" target="_blank" rel="noreferrer" whileHover={{ x: 6 }} whileTap={{ scale: 0.98 }}>
+              <span className="contact-icon"><FaLinkedinIn /></span>LinkedIn
+            </motion.a>
           </div>
         </div>
         <form className="contact-form" onSubmit={handleContactSubmit}>
           <label>
-            Name
-            <input name="name" type="text" autoComplete="name" required />
+            <span className="field-label"><span className="field-icon"><Icon name="user" /></span>Name</span>
+            <input name="name" type="text" autoComplete="name" placeholder="Your name" required />
           </label>
           <label>
-            Email
-            <input name="email" type="email" autoComplete="email" required />
+            <span className="field-label"><span className="field-icon"><Icon name="mail" /></span>Email</span>
+            <input name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
           </label>
           <label>
-            Message
-            <textarea name="message" rows="5" required />
+            <span className="field-label"><span className="field-icon"><Icon name="message" /></span>Message</span>
+            <textarea name="message" rows="5" placeholder="Tell me about your project or role…" required />
           </label>
-          <button className="button primary" type="submit">Send Message</button>
+          <button className="button primary contact-submit" type="submit">
+            <span className="btn-label">Send Message</span>
+            <Icon name="send" />
+          </button>
           <p className="form-status" role="status" aria-live="polite">{contactStatus}</p>
         </form>
       </section>
