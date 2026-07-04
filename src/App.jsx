@@ -77,7 +77,7 @@ const projects = [
     title: 'BEAT 2.0 — Distribution & Field-Sales Management Platform',
     technologies: ['React', 'NestJS', 'TypeScript', 'PostgreSQL', 'Docker', 'nginx'],
     description:
-      'B2B distribution & field-sales platform (DMS/SFA) for FMCG — full distributor-to-invoice lifecycle with beat routes, DSR dashboards, and Tally integration.',
+      'Modernized a legacy FMCG Distribution & Field-Sales Management Platform by upgrading the existing application architecture, optimizing performance, resolving production bugs, and redesigning the complete user interface. Enhanced core business modules including distributor-to-invoice workflows, DSR dashboards, and Tally ERP integration.',
     features: ['Distribution lifecycle', 'Beat / route management', 'Tally integration', 'Premium UI system'],
     tone: 'platform',
     repo: null,
@@ -756,12 +756,12 @@ export default function App() {
   const [sceneReady, setSceneReady] = useState(false);
   const lenisRef = useSmoothScroll();
 
-  // Mount the 3D scene only when its section approaches; skip entirely for reduced-motion
-  // and small/low-power screens (three.js is heavy).
+  // Mount the 3D scene only when its section approaches; skip only for reduced-motion.
+  // Mobile still gets it (with a lighter particle count / dpr — see ScrollScene).
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return undefined;
-    if (reducedMotion || window.innerWidth < 600) return undefined;
+    if (reducedMotion) return undefined;
 
     // Warm the three.js chunk during idle time so it's already cached before the section
     // scrolls into view — avoids the download hitch mid-scroll.

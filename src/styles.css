@@ -927,11 +927,6 @@ li {
   margin: 0;
   line-height: 1.5;
   font-size: 0.82rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* Features list hidden in the compact tile — description + tech tags carry it */
@@ -1539,7 +1534,29 @@ li {
     grid-template-columns: 1fr;
   }
 
+  /* Full-width mobile cards: the visual gets a taller row so it no longer overflows
+     its 92px desktop track and overlaps the title/description below it. */
+  .project-card {
+    grid-template-rows: 190px 1fr;
+  }
+
   .project-visual {
     min-height: 190px;
+  }
+}
+
+@media (max-width: 700px) {
+  /* Seven links don't fit one row on a phone — wrap to two centered rows so every
+     link stays visible (no clipped/half-shown items or forced swipe). */
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    row-gap: 4px;
+  }
+
+  /* Extra top room so the taller two-row nav never sits over the hero heading. */
+  .hero {
+    padding-top: 132px;
   }
 }
