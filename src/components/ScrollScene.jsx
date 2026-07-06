@@ -59,20 +59,22 @@ function ParticleSphere({ progress, count }) {
 
   useFrame((state, delta) => {
     const target = progress ? Math.min(Math.max(progress.get(), 0), 1) : 0;
-    // Ease toward the scroll value (frame-rate independent) so the morph glides rather
-    // than snapping — still driven by scroll position, just smoothed.
-    smooth.current += (target - smooth.current) * Math.min(1, delta * 3.2);
+    // The scroll value is already spring-smoothed upstream; a light frame-rate-independent
+    // lerp here just irons out any per-frame stepping so the morph stays glassy.
+    smooth.current += (target - smooth.current) * Math.min(1, delta * 4.5);
     const p = smooth.current;
     const eased = p * p * (3 - 2 * p);
+    const t = state.clock.elapsedTime;
     if (material.current) {
-      material.current.uniforms.uTime.value = state.clock.elapsedTime;
+      material.current.uniforms.uTime.value = t;
       material.current.uniforms.uProgress.value = p;
       material.current.uniforms.uDpr.value = state.gl.getPixelRatio();
     }
     if (points.current) {
-      // Idle drift + a stronger turn as it disperses, so the scatter feels alive.
-      points.current.rotation.y = eased * Math.PI * 0.7 + state.clock.elapsedTime * 0.05;
-      points.current.rotation.x = eased * Math.PI * 0.12;
+      // Slow, continuous drift + a stronger turn as it disperses, with a gentle sway so
+      // the whole cloud feels alive even when the sphere is fully formed.
+      points.current.rotation.y = eased * Math.PI * 0.6 + t * 0.045;
+      points.current.rotation.x = eased * Math.PI * 0.1 + Math.sin(t * 0.15) * 0.05;
     }
   });
 
@@ -99,6 +101,7 @@ function ParticleSphere({ progress, count }) {
           uniform float uSize;
           varying vec3 vColor;
           varying float vTwinkle;
+          varying float vGlow;
 
           // Rodrigues axis-angle rotation (columns = columns of R).
           mat3 rotAxis(vec3 a, float ang) {
@@ -110,6 +113,15 @@ function ParticleSphere({ progress, count }) {
             );
           }
 
+          // Flowing turbulence — cheap curl-like field for organic, liquid drift.
+          vec3 flow(vec3 q, float t) {
+            return vec3(
+              sin(q.y * 1.3 + t) + cos(q.z * 1.1 - t * 0.7),
+              sin(q.z * 1.2 - t * 0.9) + cos(q.x * 1.5 + t * 0.8),
+              sin(q.x * 1.1 + t) + cos(q.y * 1.3 - t * 0.6)
+            );
+          }
+
           void main() {
             vColor = aColor;
             float p = uProgress;                    // 0 = formed, 1 = dispersed
@@ -118,39 +130,41 @@ function ParticleSphere({ progress, count }) {
             vec3 base = position;
             vec3 dir = normalize(position);
 
-            // Spiral each particle around its own axis, farther as it disperses.
-            float spin = eased * (2.2 + aRandom * 5.5);
+            // Spiral each particle around its own axis (+ a whisper of continuous spin).
+            float spin = eased * (2.0 + aRandom * 5.5) + uTime * 0.04;
             vec3 swirled = rotAxis(aAxis, spin) * base;
 
             // Outward push — varied per particle so it scatters into a cloud with depth.
-            float dist = eased * (0.5 + aRandom * 2.2);
+            float dist = eased * (0.5 + aRandom * 2.4);
             vec3 pos = swirled + dir * dist;
 
-            // Gentle idle drift so the formed sphere is never static, stronger mid-scatter.
-            pos += vec3(
-              sin(uTime * 0.40 + aRandom * 6.2831),
-              cos(uTime * 0.34 + aRandom * 5.0),
-              sin(uTime * 0.47 + aRandom * 4.0)
-            ) * (0.028 + eased * 0.09);
+            // Organic flowing turbulence: a soft shimmer when formed, a swirling current
+            // as it scatters — this is what makes the motion feel alive and liquid.
+            vec3 turb = flow(base * 1.4 + aRandom * 4.0, uTime * 0.45);
+            pos += turb * (0.035 + eased * 0.24);
 
-            vTwinkle = 0.62 + 0.38 * sin(uTime * 2.0 + aRandom * 6.2831);
+            vTwinkle = 0.6 + 0.4 * sin(uTime * 1.8 + aRandom * 6.2831);
+            vGlow = eased;
 
             vec4 mv = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mv;
-            float size = uSize * (0.4 + aRandom) * (1.0 + eased * 0.55);
+            float size = uSize * (0.4 + aRandom) * (1.0 + eased * 0.6);
             gl_PointSize = size * uDpr / -mv.z;
           }
         `}
         fragmentShader={`
           varying vec3 vColor;
           varying float vTwinkle;
+          varying float vGlow;
           void main() {
             float d = length(gl_PointCoord - 0.5);
             if (d > 0.5) discard;
-            // Soft glowing core with a bright center falloff.
-            float alpha = smoothstep(0.5, 0.04, d);
-            float core = smoothstep(0.32, 0.0, d);
-            vec3 col = vColor * (0.75 + vTwinkle * 0.5) + core * 0.35;
+            // Soft round particle with a bright glowing core.
+            float alpha = smoothstep(0.5, 0.03, d);
+            float core = smoothstep(0.28, 0.0, d);
+            // Warm gold "ignite" as the cloud disperses — the scatter lights up.
+            vec3 warm = vec3(1.0, 0.82, 0.5);
+            vec3 col = mix(vColor, mix(vColor, warm, 0.5), vGlow) * (0.72 + vTwinkle * 0.55) + core * 0.45;
             gl_FragColor = vec4(col, alpha * vTwinkle * 0.95);
           }
         `}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { motion, useScroll } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import {
   SiReact, SiJavascript, SiTypescript, SiHtml5, SiCss, SiTailwindcss,
   SiNodedotjs, SiExpress, SiDjango, SiFastapi, SiPython, SiC,
@@ -82,7 +82,8 @@ const projects = [
     tone: 'platform',
     repo: null,
     demo: null,
-    note: 'Minu Marketing Pvt Ltd.'
+    note: 'Minu Marketing Pvt Ltd.',
+    companyLogo: '/logos/minu-marketing.jpg'
   },
   {
     title: 'Aarambh — Digital Onboarding System',
@@ -93,7 +94,8 @@ const projects = [
     tone: 'aarambh',
     repo: null,
     demo: null,
-    note: 'Aditya Birla Group Hindalco'
+    note: 'Aditya Birla Group Hindalco',
+    companyLogo: '/logos/hindalco.webp'
   },
   {
     title: 'ICMS — Calibration & Maintenance',
@@ -104,7 +106,8 @@ const projects = [
     tone: 'icms',
     repo: null,
     demo: null,
-    note: 'Aditya Birla Group Hindalco'
+    note: 'Aditya Birla Group Hindalco',
+    companyLogo: '/logos/hindalco.webp'
   },
   {
     title: 'Kund Vaani — Feedback System',
@@ -115,7 +118,8 @@ const projects = [
     tone: 'survey',
     repo: null,
     demo: null,
-    note: 'Aditya Birla Group Hindalco'
+    note: 'Aditya Birla Group Hindalco',
+    companyLogo: '/logos/hindalco.webp'
   },
   {
     title: 'Smart Inventory Tracker',
@@ -126,7 +130,8 @@ const projects = [
     tone: 'inventory',
     repo: null,
     demo: null,
-    note: 'Aditya Birla Group Hindalco'
+    note: 'Aditya Birla Group Hindalco',
+    companyLogo: '/logos/hindalco.webp'
   },
   {
     title: 'Event Registration System',
@@ -137,7 +142,8 @@ const projects = [
     tone: 'event',
     repo: null,
     demo: null,
-    note: 'Aditya Birla Group Hindalco'
+    note: 'Aditya Birla Group Hindalco',
+    companyLogo: '/logos/hindalco.webp'
   }
 ];
 
@@ -593,7 +599,16 @@ function ProjectCard({ project, index }) {
             <a href={project.demo} target="_blank" rel="noreferrer">Live demo</a>
           )}
           {!project.repo && !project.demo && project.note && (
-            <span className="card-note">{project.note}</span>
+            project.companyLogo ? (
+              <span className="card-company">
+                <span className="card-company-logo">
+                  <img src={project.companyLogo} alt={`${project.note} logo`} loading="lazy" />
+                </span>
+                <span className="card-company-name">{project.note}</span>
+              </span>
+            ) : (
+              <span className="card-note">{project.note}</span>
+            )
           )}
         </div>
       </div>
@@ -753,6 +768,9 @@ export default function App() {
     target: sceneRef,
     offset: ['start start', 'end end']
   });
+  // Spring-smooth the scroll value so the particle motion glides fluidly instead of
+  // tracking every raw scroll delta.
+  const smoothSceneProgress = useSpring(sceneProgress, { stiffness: 70, damping: 24, mass: 0.4 });
   const [sceneReady, setSceneReady] = useState(false);
   const lenisRef = useSmoothScroll();
 
@@ -1007,7 +1025,7 @@ export default function App() {
           <div className="scene-canvas">
             {sceneReady && (
               <Suspense fallback={null}>
-                <ScrollScene progress={sceneProgress} />
+                <ScrollScene progress={smoothSceneProgress} />
               </Suspense>
             )}
           </div>
