@@ -781,13 +781,10 @@ export default function App() {
     if (!el) return undefined;
     if (reducedMotion) return undefined;
 
-    // Warm the three.js chunk during idle time so it's already cached before the section
-    // scrolls into view — avoids the download hitch mid-scroll.
-    const preload = () => {
-      import('./components/ScrollScene.jsx');
-    };
-    const hasIdle = 'requestIdleCallback' in window;
-    const idleId = hasIdle ? window.requestIdleCallback(preload, { timeout: 4000 }) : window.setTimeout(preload, 1800);
+    // Fetch the three.js chunk immediately (we're already past first paint here, so it
+    // downloads in parallel while the visitor reads the hero) — deferring it to idle
+    // time meant the download often raced the visitor's scroll and lost.
+    import('./components/ScrollScene.jsx');
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -796,15 +793,12 @@ export default function App() {
           observer.disconnect();
         }
       },
-      { rootMargin: '900px' }
+      // Mount ~2 screens ahead so WebGL context + shader compile finish offscreen.
+      { rootMargin: '1800px' }
     );
     observer.observe(el);
 
-    return () => {
-      observer.disconnect();
-      if (hasIdle) window.cancelIdleCallback(idleId);
-      else clearTimeout(idleId);
-    };
+    return () => observer.disconnect();
   }, [reducedMotion]);
 
   const handleNavClick = (event, id) => {
@@ -1023,10 +1017,12 @@ export default function App() {
       <section className="scene-band" ref={sceneRef} aria-labelledby="scene-heading">
         <div className="scene-sticky">
           <div className="scene-canvas">
-            {sceneReady && (
-              <Suspense fallback={null}>
+            {sceneReady ? (
+              <Suspense fallback={<div className="scene-placeholder" aria-hidden="true" />}>
                 <ScrollScene progress={smoothSceneProgress} />
               </Suspense>
+            ) : (
+              <div className="scene-placeholder" aria-hidden="true" />
             )}
           </div>
           <div className="scene-caption">
