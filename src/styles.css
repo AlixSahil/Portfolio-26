@@ -1532,17 +1532,21 @@ li {
   }
 }
 
-@media (max-width: 860px) {
-  .hero {
-    min-height: 92vh;
-  }
-
-  /* The 40vh statement band reads as a huge empty void around three short lines
-     on small screens — collapse it to comfortable breathing room instead. */
+/* The 40vh statement band reads as a huge empty void around a few short lines
+   whenever the viewport is tall and narrow — true on small screens AND in
+   "Desktop site" mode on a phone (~980px-wide layout, portrait-tall vh).
+   Collapse it to comfortable breathing room in both cases. */
+@media (max-width: 860px), (orientation: portrait) {
   .reveal-band {
     min-height: 0;
     padding-top: 64px;
     padding-bottom: 64px;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    min-height: 92vh;
   }
 
   .nav {
