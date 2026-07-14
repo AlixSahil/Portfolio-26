@@ -468,7 +468,9 @@ h1 {
 }
 
 .reveal-band {
-  min-height: 40vh;
+  /* Capped so tall-and-narrow viewports (desktop-site mode on phones) can never
+     stretch this band into a huge void even if the portrait query doesn't match. */
+  min-height: min(40vh, 420px);
   padding: clamp(52px, 7vw, 92px) clamp(20px, 6vw, 92px);
   display: flex;
   align-items: center;
