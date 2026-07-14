@@ -1537,6 +1537,14 @@ li {
     min-height: 92vh;
   }
 
+  /* The 40vh statement band reads as a huge empty void around three short lines
+     on small screens — collapse it to comfortable breathing room instead. */
+  .reveal-band {
+    min-height: 0;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
   .nav {
     justify-content: flex-start;
   }
