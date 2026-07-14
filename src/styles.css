@@ -1546,6 +1546,20 @@ li {
   }
 }
 
+/* Desktop layout on a portrait-tall device = Desktop-site mode on a phone (and
+   portrait tablets): the 88vh hero balloons past 1800px of mostly-empty veil.
+   Let it hug its content there; real (landscape) desktops keep the full-screen
+   hero, and normal mobile keeps its own 92vh rule below 861px. */
+@media (orientation: portrait) and (min-width: 861px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .hero-content {
+    padding-top: 24px;
+  }
+}
+
 @media (max-width: 860px) {
   .hero {
     min-height: 92vh;
