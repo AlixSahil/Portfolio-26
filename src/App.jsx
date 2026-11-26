@@ -81,7 +81,6 @@ const projects = [
       'Developed a production-ready B2C e-commerce platform for an Indian food brand, featuring product management, secure checkout, Razorpay payments, inventory management, Shiprocket integration, GST invoicing, and a role-based admin dashboard.',
     features: ['Secure checkout & Razorpay', 'Inventory management', 'Shiprocket & GST invoicing', 'Role-based admin'],
     tone: 'ecommerce',
-    featured: true,
     repo: null,
     demo: 'https://shayvera.in/',
     note: 'Shayvera Food',
@@ -329,174 +328,65 @@ function ExperienceItem({ item, index }) {
   );
 }
 
-// Distinct, glowing schematic per project — a focal glyph that tells each project's
-// story (shopping bag + delivery, network hub, onboarding path, calibration gauge, crates).
-// Gradient/filter ids are tone-prefixed so the inline SVGs never collide.
-const projectArt = {
-  inventory: (
-    <>
-      <defs>
-        <radialGradient id="inventory-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="inventory-box" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.12" />
-        </linearGradient>
-      </defs>
-      {/* stacked crates */}
-      <g stroke="rgba(247,244,236,0.4)" strokeWidth="1.6">
-        <rect x="42" y="62" width="36" height="32" rx="4" fill="url(#inventory-box)" />
-        <rect x="82" y="62" width="36" height="32" rx="4" fill="url(#inventory-box)" />
-        <rect x="62" y="30" width="36" height="32" rx="4" fill="url(#inventory-box)" />
-      </g>
-      <g stroke="rgba(247,244,236,0.32)" strokeWidth="1.5">
-        <line x1="60" y1="62" x2="60" y2="94" />
-        <line x1="100" y1="62" x2="100" y2="94" />
-        <line x1="80" y1="30" x2="80" y2="62" />
-      </g>
-      {/* real-time trend line */}
-      <polyline points="128,86 148,70 166,78 188,50" fill="none" stroke="#6fb5ff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="128" cy="86" r="3.2" fill="#6fb5ff" />
-      <circle cx="148" cy="70" r="3.2" fill="#6fb5ff" />
-      <circle cx="166" cy="78" r="3.2" fill="#6fb5ff" />
-      {/* glowing alert badge at the peak */}
-      <circle cx="188" cy="50" r="18" fill="url(#inventory-halo)" />
-      <circle cx="188" cy="50" r="8" fill="#12131a" stroke="#f3cf61" strokeWidth="2.2" />
-      <line x1="188" y1="45" x2="188" y2="51" stroke="#f3cf61" strokeWidth="2.2" strokeLinecap="round" />
-      <circle cx="188" cy="55" r="1.4" fill="#f3cf61" />
-    </>
-  ),
+// One animated app-icon style logo per project. Glyphs are drawn on a 32×32 grid with a
+// shared white stroke (set in CSS); classes on inner parts drive each glyph's micro-animation.
+const projectLogos = {
+  // Shayvera Food: shopping bag with a swaying leaf (fresh food) and a twinkle
   ecommerce: (
     <>
-      <defs>
-        <radialGradient id="ecommerce-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="ecommerce-bag" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.1" />
-        </linearGradient>
-      </defs>
-      {/* shopping bag */}
-      <path d="M40 46 h60 l6 50 h-72 z" fill="url(#ecommerce-bag)" stroke="rgba(247,244,236,0.4)" strokeWidth="1.6" strokeLinejoin="round" />
-      <path d="M56 46 v-6 a14 14 0 0 1 28 0 v6" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" />
-      {/* glowing paid (₹) badge on the bag */}
-      <circle cx="70" cy="72" r="19" fill="url(#ecommerce-halo)" />
-      <circle cx="70" cy="72" r="11" fill="#12131a" stroke="#f3cf61" strokeWidth="2.2" />
-      <path d="M65 66.5 h10 M65 70 h10 M67.5 66.5 a3.5 3.5 0 0 1 0 7 h-2.5 l7 6.5" fill="none" stroke="#f3cf61" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      {/* dotted shipping route */}
-      <path d="M112 78 C124 56 138 54 148 66" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1.5 6" />
-      {/* delivery truck */}
-      <g stroke="#6fb5ff" strokeWidth="2" strokeLinejoin="round" fill="rgba(111,181,255,0.12)">
-        <rect x="150" y="60" width="34" height="26" rx="3" />
-        <path d="M184 68 h12 l8 9 v9 h-20 z" />
-      </g>
-      <g fill="#12131a" stroke="#6fb5ff" strokeWidth="2">
-        <circle cx="162" cy="90" r="5" />
-        <circle cx="194" cy="90" r="5" />
+      <path d="M8.5 12h15l-1.3 12.6a2.2 2.2 0 0 1-2.2 2H12a2.2 2.2 0 0 1-2.2-2Z" />
+      <path d="M12.5 12v-1.8a3.5 3.5 0 0 1 7 0V12" />
+      <path className="pv-leaf pv-fill" d="M16 23.6c-3.3-.9-4.5-4.4-2.2-7.6 3.1.9 4.2 4.4 2.2 7.6Z" />
+      <path className="pv-spark" d="M26 4.2v3.6M24.2 6h3.6" />
+    </>
+  ),
+  // BEAT 2.0: a field-sales route marching toward a map pin
+  platform: (
+    <>
+      <circle cx="8" cy="24" r="2.2" />
+      <path className="pv-route" d="M10.2 23.4c4-1.2 2.5-6.4 6.8-6.4 3.2 0 3.6 2.6 5 2.6" />
+      <g className="pv-pin">
+        <path d="M22 4.5a5 5 0 0 1 5 5c0 3.8-5 8.5-5 8.5s-5-4.7-5-8.5a5 5 0 0 1 5-5Z" />
+        <circle className="pv-fill" cx="22" cy="9.5" r="1.7" />
       </g>
     </>
   ),
+  // Aarambh ("beginning"): a sun rising over the horizon
   aarambh: (
     <>
       <defs>
-        <radialGradient id="aarambh-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="aarambh-step" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.6" />
-        </linearGradient>
+        <clipPath id="pv-aarambh-horizon">
+          <rect x="0" y="0" width="32" height="21" />
+        </clipPath>
       </defs>
-      {/* ascending onboarding steps */}
-      <g fill="url(#aarambh-step)" stroke="rgba(247,244,236,0.3)" strokeWidth="1.4">
-        <rect x="28" y="74" width="34" height="22" rx="4" />
-        <rect x="68" y="58" width="34" height="38" rx="4" />
-        <rect x="108" y="42" width="34" height="54" rx="4" />
+      <g clipPath="url(#pv-aarambh-horizon)">
+        <circle className="pv-sun pv-fill" cx="16" cy="21" r="6" />
       </g>
-      {/* rising dotted path to completion */}
-      <path d="M40 70 L84 54 L124 38 L170 32" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1.5 6" />
-      {/* glowing completion medallion */}
-      <circle cx="178" cy="32" r="27" fill="url(#aarambh-halo)" />
-      <circle cx="178" cy="32" r="16" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
-      <path d="M170 32 l5.5 5.5 l9.5 -12" fill="none" stroke="#f3cf61" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path className="pv-rays" d="M16 12.5V10M10 15l-1.8-1.8M22 15l1.8-1.8M8.2 17.8l-2.4-1M23.8 17.8l2.4-1" />
+      <path d="M5 21h22" />
+      <path d="M10 25.5h12" opacity="0.7" />
     </>
   ),
+  // ICMS: a calibration gauge whose needle sweeps and settles
   icms: (
     <>
-      <defs>
-        <linearGradient id="icms-arc" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#6fb5ff" />
-          <stop offset="100%" stopColor="#f3cf61" />
-        </linearGradient>
-        <radialGradient id="icms-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      {/* gradient gauge arc */}
-      <path d="M64 92 A56 56 0 0 1 176 92" fill="none" stroke="url(#icms-arc)" strokeWidth="5" strokeLinecap="round" />
-      {/* ticks */}
-      <g stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round">
-        <line x1="72" y1="64" x2="78" y2="68" />
-        <line x1="120" y1="37" x2="120" y2="45" />
-        <line x1="168" y1="64" x2="162" y2="68" />
-      </g>
-      {/* needle + glow */}
-      <circle cx="120" cy="92" r="20" fill="url(#icms-halo)" />
-      <line x1="120" y1="92" x2="151" y2="58" stroke="#f3cf61" strokeWidth="3.5" strokeLinecap="round" />
-      <circle cx="120" cy="92" r="6.5" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
-      {/* small gear */}
-      <g transform="translate(58,46)" stroke="#6fb5ff" strokeWidth="2" fill="none">
-        <circle r="7.5" />
-        <g strokeLinecap="round">
-          <line x1="0" y1="-12" x2="0" y2="-9" />
-          <line x1="0" y1="9" x2="0" y2="12" />
-          <line x1="-12" y1="0" x2="-9" y2="0" />
-          <line x1="9" y1="0" x2="12" y2="0" />
-          <line x1="-8.5" y1="-8.5" x2="-6.4" y2="-6.4" />
-          <line x1="6.4" y1="6.4" x2="8.5" y2="8.5" />
-        </g>
-      </g>
+      <path d="M6 22a10 10 0 0 1 20 0" />
+      <path d="M8.9 14.9l1.4 1.4M16 12v2M23.1 14.9l-1.4 1.4" opacity="0.75" />
+      <path className="pv-needle" d="M16 22l5-6" />
+      <circle className="pv-fill" cx="16" cy="22" r="2.1" />
+      <path d="M10 26.5h12" opacity="0.7" />
     </>
   ),
-  platform: (
+  // Smart Inventory Tracker: a stock crate with a live-tracking ping
+  inventory: (
     <>
-      <defs>
-        <radialGradient id="platform-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="platform-link" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.8" />
-        </linearGradient>
-      </defs>
-      {/* glow behind the distribution hub */}
-      <circle cx="120" cy="60" r="42" fill="url(#platform-halo)" />
-      {/* links out to retailers / routes */}
-      <g stroke="url(#platform-link)" strokeWidth="2" strokeLinecap="round">
-        <line x1="120" y1="60" x2="50" y2="30" />
-        <line x1="120" y1="60" x2="40" y2="82" />
-        <line x1="120" y1="60" x2="196" y2="28" />
-        <line x1="120" y1="60" x2="204" y2="80" />
-        <line x1="120" y1="60" x2="120" y2="102" />
+      <g className="pv-crate">
+        <path d="M16 5.5l9 4.5-9 4.5-9-4.5Z" />
+        <path d="M7 10v10.5l9 4.5 9-4.5V10M16 14.5V25" />
+        <path d="M11.5 7.75l9 4.5" opacity="0.6" />
       </g>
-      {/* satellite nodes */}
-      <g fill="#6fb5ff">
-        <circle cx="50" cy="30" r="5.5" />
-        <circle cx="40" cy="82" r="5.5" />
-        <circle cx="196" cy="28" r="5.5" />
-        <circle cx="204" cy="80" r="5.5" />
-        <circle cx="120" cy="102" r="5.5" />
-      </g>
-      {/* central distributor hub */}
-      <circle cx="120" cy="60" r="14" fill="#12131a" stroke="#f3cf61" strokeWidth="2.5" />
-      <circle cx="120" cy="60" r="5" fill="#f3cf61" />
+      <circle className="pv-ping" cx="26" cy="5" r="2.2" />
+      <circle className="pv-fill" cx="26" cy="5" r="2.2" />
     </>
   )
 };
@@ -504,9 +394,11 @@ const projectArt = {
 function ProjectVisual({ tone }) {
   return (
     <div className={`project-visual ${tone}`} aria-hidden="true">
-      <svg className="pv-art" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
-        {projectArt[tone]}
-      </svg>
+      <span className="pv-logo">
+        <svg className="pv-glyph" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          {projectLogos[tone]}
+        </svg>
+      </span>
     </div>
   );
 }
@@ -515,7 +407,7 @@ function ProjectCard({ project, index }) {
   const tilt = useTilt(6);
   return (
     <motion.article
-      className={`project-card tilt-card${project.featured ? ' featured' : ''}`}
+      className="project-card tilt-card"
       variants={revealUp}
       initial="hidden"
       whileInView="visible"
