@@ -854,20 +854,23 @@ li {
   background: rgba(111, 181, 255, 0.12);
 }
 
+/* Equal-width cards, 3 per row; a short last row is centred instead of left-aligned */
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  --project-cols: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 18px;
 }
 
-/* Featured project spans two columns so five cards fill the 3-up grid (2+1 / 3) */
-.project-card.featured {
-  grid-column: span 2;
+.project-grid > .project-card {
+  flex: 0 0 calc((100% - (var(--project-cols) - 1) * 18px) / var(--project-cols));
+  min-width: 0;
 }
 
 .project-card {
   display: grid;
-  grid-template-rows: 92px 1fr;
+  grid-template-rows: 116px 1fr;
   overflow: hidden;
   border: 1px solid rgba(21, 21, 21, 0.16);
   border-radius: 8px;
@@ -882,11 +885,6 @@ li {
   transform: translateY(-6px);
   border-color: rgba(243, 207, 97, 0.38);
   box-shadow: 0 24px 70px rgba(21, 21, 21, 0.14);
-}
-
-.project-card:hover .project-visual::before {
-  border-color: rgba(243, 207, 97, 0.36);
-  box-shadow: inset 0 0 32px rgba(243, 207, 97, 0.08);
 }
 
 .project-card-body {
@@ -966,64 +964,154 @@ li {
   color: #555145;
 }
 
+/* ---- Project header: one minimal line logo on a quiet, neutral stage ---- */
 .project-visual {
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(7, 8, 11, 0.96), rgba(28, 35, 42, 0.96)),
-    radial-gradient(circle at 70% 28%, rgba(243, 207, 97, 0.46), transparent 18rem);
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #17181d, #111216);
 }
 
+/* Barely-there top highlight so the stage doesn't read as a flat block */
 .project-visual::before {
   content: "";
   position: absolute;
-  inset: 16px;
-  border: 1px solid rgba(247, 244, 236, 0.18);
-  border-radius: 8px;
-  transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease;
-  z-index: 1;
-}
-
-/* Full-width ambient glow so the panel reads as designed around the centred glyph */
-.project-visual::after {
-  content: "";
-  position: absolute;
   inset: 0;
-  background:
-    radial-gradient(130% 120% at 50% 40%, rgba(247, 244, 236, 0.07), transparent 62%),
-    radial-gradient(80% 140% at 50% 120%, rgba(243, 207, 97, 0.1), transparent 60%);
+  background: radial-gradient(60% 90% at 50% 0%, rgba(247, 244, 236, 0.06), transparent 70%);
   pointer-events: none;
 }
 
-.pv-art {
+.pv-logo {
   position: relative;
   z-index: 1;
-  width: 100%;
-  height: 100%;
-  padding: 12px 22px;
-  transition: transform 260ms ease;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(247, 244, 236, 0.14);
+  border-radius: 16px;
+  background: rgba(247, 244, 236, 0.03);
+  transition:
+    border-color 260ms ease,
+    background 260ms ease,
+    translate 260ms ease;
 }
 
-.project-card:hover .pv-art {
-  transform: scale(1.035);
+.project-card:hover .pv-logo {
+  translate: 0 -2px;
+  border-color: rgba(243, 207, 97, 0.45);
+  background: rgba(247, 244, 236, 0.05);
 }
 
-.project-visual.ecommerce {
-  background: linear-gradient(135deg, #101116, #3f2f1d);
+.pv-glyph {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  overflow: visible;
+  fill: none;
+  stroke: #ece8dc;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.project-visual.platform {
-  background: linear-gradient(135deg, #101116, #241d3f);
+/* The one accent: small solid details pick up the site's gold */
+.pv-glyph .pv-fill {
+  fill: #f3cf61;
+  stroke: none;
 }
 
-.project-visual.aarambh {
-  background: linear-gradient(135deg, #101116, #1d3f35);
+.pv-glyph .pv-spark,
+.pv-glyph .pv-ping {
+  stroke: #f3cf61;
 }
 
-.project-visual.icms {
-  background: linear-gradient(135deg, #101116, #1d333f);
+/* Per-logo micro-animations (resting pose is the 0%/100% frame) */
+.pv-leaf {
+  transform-origin: 16px 23.6px;
+  animation: pv-sway 3.2s ease-in-out infinite;
+}
+
+.pv-spark {
+  transform-origin: 26px 6px;
+  animation: pv-twinkle 2.4s ease-in-out infinite;
+}
+
+.pv-route {
+  stroke-dasharray: 1.6 3.2;
+  animation: pv-march 1.2s linear infinite;
+}
+
+.pv-pin {
+  animation: pv-bob 2.4s ease-in-out infinite;
+}
+
+.pv-sun {
+  animation: pv-rise 4.8s ease-in-out infinite;
+}
+
+.pv-rays {
+  transform-origin: 16px 21px;
+  animation: pv-shine 4.8s ease-in-out infinite;
+}
+
+.pv-needle {
+  transform-origin: 16px 22px;
+  animation: pv-calibrate 4.2s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+.pv-crate {
+  animation: pv-bob 3s ease-in-out infinite;
+}
+
+.pv-ping {
+  stroke-width: 1.6;
+  transform-origin: 26px 5px;
+  animation: pv-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pv-sway {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-12deg); }
+  70% { transform: rotate(9deg); }
+}
+
+@keyframes pv-twinkle {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.25; transform: scale(0.45) rotate(45deg); }
+}
+
+@keyframes pv-march {
+  to { stroke-dashoffset: -9.6; }
+}
+
+@keyframes pv-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.6px); }
+}
+
+@keyframes pv-rise {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2.2px); }
+}
+
+@keyframes pv-shine {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.86); }
+}
+
+@keyframes pv-calibrate {
+  0%, 88%, 100% { transform: rotate(0deg); }
+  28% { transform: rotate(-72deg); }
+  56% { transform: rotate(10deg); }
+  68% { transform: rotate(-5deg); }
+  78% { transform: rotate(2deg); }
+}
+
+@keyframes pv-ping {
+  0% { opacity: 0.9; transform: scale(1); }
+  80%, 100% { opacity: 0; transform: scale(2.6); }
 }
 
 .tech-list span {
@@ -1514,7 +1602,7 @@ li {
 /* Projects: 3-up (two rows of three) on desktop, 2-up on tablet, stacked on phones */
 @media (max-width: 900px) {
   .project-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    --project-cols: 2;
   }
 }
 
@@ -1527,11 +1615,7 @@ li {
 
 @media (max-width: 560px) {
   .project-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-card.featured {
-    grid-column: auto;
+    --project-cols: 1;
   }
 
   .cert-grid {
@@ -1633,14 +1717,13 @@ li {
     grid-template-columns: 1fr;
   }
 
-  /* Full-width mobile cards: the visual gets a taller row so it no longer overflows
-     its 92px desktop track and overlaps the title/description below it. */
+  /* Full-width mobile cards: a taller logo stage so it doesn't look squashed */
   .project-card {
-    grid-template-rows: 190px 1fr;
+    grid-template-rows: 150px 1fr;
   }
 
   .project-visual {
-    min-height: 190px;
+    min-height: 150px;
   }
 }
 
