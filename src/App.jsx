@@ -72,7 +72,21 @@ const skillGroups = [
 
 // repo / demo: fill in real per-project URLs to render the buttons.
 // When both are null the card shows a `note` tag instead of faking a link.
+// A `companyLogo` badge shows alongside any links.
 const projects = [
+  {
+    title: 'Shayvera Food — Full-Stack E-Commerce Platform',
+    technologies: ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Prisma', 'Tailwind CSS', 'Docker', 'Razorpay'],
+    description:
+      'Developed a production-ready B2C e-commerce platform for an Indian food brand, featuring product management, secure checkout, Razorpay payments, inventory management, Shiprocket integration, GST invoicing, and a role-based admin dashboard.',
+    features: ['Secure checkout & Razorpay', 'Inventory management', 'Shiprocket & GST invoicing', 'Role-based admin'],
+    tone: 'ecommerce',
+    featured: true,
+    repo: null,
+    demo: 'https://shayvera.in/',
+    note: 'Shayvera Food',
+    companyLogo: '/logos/shayvera.svg'
+  },
   {
     title: 'BEAT 2.0 — Distribution & Field-Sales Management Platform',
     technologies: ['React', 'NestJS', 'TypeScript', 'PostgreSQL', 'Docker', 'nginx'],
@@ -110,36 +124,12 @@ const projects = [
     companyLogo: '/logos/hindalco.webp'
   },
   {
-    title: 'Kund Vaani — Feedback System',
-    technologies: ['Oracle APEX', 'Oracle Database', 'SQL', 'PL/SQL', 'TypeUI', 'jQuery'],
-    description:
-      'Centralized employee feedback platform with automated survey scheduling, custom SQL reporting, and real-time dashboards.',
-    features: ['Survey scheduling', 'SQL reporting', 'Real-time dashboards', 'Feedback analytics'],
-    tone: 'survey',
-    repo: null,
-    demo: null,
-    note: 'Aditya Birla Group Hindalco',
-    companyLogo: '/logos/hindalco.webp'
-  },
-  {
     title: 'Smart Inventory Tracker',
     technologies: ['Oracle APEX', 'Oracle Database', 'PL/SQL', 'ORDS', 'Tailwind CSS', 'jQuery'],
     description:
       'Real-time inventory tracking with automated alerts and operational dashboards for end-to-end stock visibility.',
     features: ['Real-time alerts', 'Stock dashboards', 'Inventory tracking', 'Operational visibility'],
     tone: 'inventory',
-    repo: null,
-    demo: null,
-    note: 'Aditya Birla Group Hindalco',
-    companyLogo: '/logos/hindalco.webp'
-  },
-  {
-    title: 'Event Registration System',
-    technologies: ['React', 'TypeScript', 'Firebase', 'Tailwind CSS'],
-    description:
-      'QR-based event registration platform that accelerated on-site check-in and streamlined event operations.',
-    features: ['QR registration', 'Fast check-in', 'Firebase backend', 'Responsive UI'],
-    tone: 'event',
     repo: null,
     demo: null,
     note: 'Aditya Birla Group Hindalco',
@@ -340,8 +330,8 @@ function ExperienceItem({ item, index }) {
 }
 
 // Distinct, glowing schematic per project — a focal glyph that tells each project's
-// story (network hub, onboarding path, calibration gauge, ticket, crates, feedback).
-// Gradient/filter ids are tone-prefixed so the six inline SVGs never collide.
+// story (shopping bag + delivery, network hub, onboarding path, calibration gauge, crates).
+// Gradient/filter ids are tone-prefixed so the inline SVGs never collide.
 const projectArt = {
   inventory: (
     <>
@@ -378,36 +368,36 @@ const projectArt = {
       <circle cx="188" cy="55" r="1.4" fill="#f3cf61" />
     </>
   ),
-  survey: (
+  ecommerce: (
     <>
       <defs>
-        <radialGradient id="survey-halo" cx="50%" cy="50%" r="50%">
+        <radialGradient id="ecommerce-halo" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.6" />
           <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="survey-bubble" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.05" />
+        <linearGradient id="ecommerce-bag" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.1" />
         </linearGradient>
       </defs>
-      {/* feedback speech bubble ("vaani" = voice) */}
-      <path
-        d="M50 30 h108 a14 14 0 0 1 14 14 v22 a14 14 0 0 1 -14 14 h-70 l-16 16 v-16 h-16 a14 14 0 0 1 -14 -14 v-22 a14 14 0 0 1 14 -14 z"
-        fill="url(#survey-bubble)"
-        stroke="rgba(247,244,236,0.3)"
-        strokeWidth="1.6"
-      />
-      {/* glowing rating star */}
-      <circle cx="78" cy="56" r="19" fill="url(#survey-halo)" />
-      <path d="M78 44 L80.8 52.1 L89.4 52.3 L82.6 57.5 L85.1 65.7 L78 60.8 L71 65.7 L73.4 57.5 L66.6 52.3 L75.2 52.1 Z" fill="#f3cf61" />
-      {/* response dots + line */}
-      <g fill="#6fb5ff">
-        <circle cx="112" cy="49" r="3.2" />
-        <circle cx="124" cy="49" r="3.2" />
-        <circle cx="136" cy="49" r="3.2" />
-        <circle cx="148" cy="49" r="3.2" />
+      {/* shopping bag */}
+      <path d="M40 46 h60 l6 50 h-72 z" fill="url(#ecommerce-bag)" stroke="rgba(247,244,236,0.4)" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M56 46 v-6 a14 14 0 0 1 28 0 v6" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" />
+      {/* glowing paid (₹) badge on the bag */}
+      <circle cx="70" cy="72" r="19" fill="url(#ecommerce-halo)" />
+      <circle cx="70" cy="72" r="11" fill="#12131a" stroke="#f3cf61" strokeWidth="2.2" />
+      <path d="M65 66.5 h10 M65 70 h10 M67.5 66.5 a3.5 3.5 0 0 1 0 7 h-2.5 l7 6.5" fill="none" stroke="#f3cf61" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      {/* dotted shipping route */}
+      <path d="M112 78 C124 56 138 54 148 66" fill="none" stroke="rgba(247,244,236,0.45)" strokeWidth="2" strokeLinecap="round" strokeDasharray="1.5 6" />
+      {/* delivery truck */}
+      <g stroke="#6fb5ff" strokeWidth="2" strokeLinejoin="round" fill="rgba(111,181,255,0.12)">
+        <rect x="150" y="60" width="34" height="26" rx="3" />
+        <path d="M184 68 h12 l8 9 v9 h-20 z" />
       </g>
-      <line x1="112" y1="63" x2="152" y2="63" stroke="rgba(247,244,236,0.4)" strokeWidth="2.4" strokeLinecap="round" />
+      <g fill="#12131a" stroke="#6fb5ff" strokeWidth="2">
+        <circle cx="162" cy="90" r="5" />
+        <circle cx="194" cy="90" r="5" />
+      </g>
     </>
   ),
   aarambh: (
@@ -474,45 +464,6 @@ const projectArt = {
       </g>
     </>
   ),
-  event: (
-    <>
-      <defs>
-        <radialGradient id="event-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f3cf61" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#f3cf61" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="event-ticket" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#6fb5ff" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#6fb5ff" stopOpacity="0.04" />
-        </linearGradient>
-      </defs>
-      {/* ticket body */}
-      <rect x="44" y="34" width="152" height="52" rx="10" fill="url(#event-ticket)" stroke="rgba(247,244,236,0.3)" strokeWidth="1.6" />
-      {/* perforation stub divider */}
-      <line x1="118" y1="38" x2="118" y2="82" stroke="rgba(247,244,236,0.3)" strokeWidth="1.6" strokeDasharray="3 4" />
-      {/* QR block */}
-      <g fill="#f3cf61">
-        <rect x="58" y="46" width="7" height="7" rx="1" />
-        <rect x="69" y="46" width="7" height="7" rx="1" />
-        <rect x="58" y="57" width="7" height="7" rx="1" />
-      </g>
-      <g fill="#6fb5ff">
-        <rect x="80" y="46" width="7" height="7" rx="1" />
-        <rect x="69" y="57" width="7" height="7" rx="1" />
-        <rect x="80" y="57" width="7" height="7" rx="1" />
-        <rect x="58" y="68" width="7" height="7" rx="1" />
-        <rect x="80" y="68" width="7" height="7" rx="1" />
-      </g>
-      {/* stub detail lines */}
-      <g stroke="rgba(247,244,236,0.4)" strokeWidth="2.4" strokeLinecap="round">
-        <line x1="132" y1="48" x2="180" y2="48" />
-        <line x1="132" y1="58" x2="170" y2="58" />
-      </g>
-      {/* glowing scan check */}
-      <circle cx="156" cy="72" r="15" fill="url(#event-halo)" />
-      <path d="M149 71 l5 5 l9.5 -11.5" fill="none" stroke="#f3cf61" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-    </>
-  ),
   platform: (
     <>
       <defs>
@@ -564,7 +515,7 @@ function ProjectCard({ project, index }) {
   const tilt = useTilt(6);
   return (
     <motion.article
-      className="project-card tilt-card"
+      className={`project-card tilt-card${project.featured ? ' featured' : ''}`}
       variants={revealUp}
       initial="hidden"
       whileInView="visible"
@@ -596,19 +547,18 @@ function ProjectCard({ project, index }) {
             <a href={project.repo} target="_blank" rel="noreferrer">View code</a>
           )}
           {project.demo && (
-            <a href={project.demo} target="_blank" rel="noreferrer">Live demo</a>
+            <a href={project.demo} target="_blank" rel="noreferrer">Live site</a>
           )}
-          {!project.repo && !project.demo && project.note && (
-            project.companyLogo ? (
-              <span className="card-company">
-                <span className="card-company-logo">
-                  <img src={project.companyLogo} alt={`${project.note} logo`} loading="lazy" />
-                </span>
-                <span className="card-company-name">{project.note}</span>
+          {project.note && project.companyLogo && (
+            <span className="card-company">
+              <span className="card-company-logo">
+                <img src={project.companyLogo} alt={`${project.note} logo`} loading="lazy" />
               </span>
-            ) : (
-              <span className="card-note">{project.note}</span>
-            )
+              <span className="card-company-name">{project.note}</span>
+            </span>
+          )}
+          {!project.repo && !project.demo && project.note && !project.companyLogo && (
+            <span className="card-note">{project.note}</span>
           )}
         </div>
       </div>

@@ -860,6 +860,11 @@ li {
   gap: 18px;
 }
 
+/* Featured project spans two columns so five cards fill the 3-up grid (2+1 / 3) */
+.project-card.featured {
+  grid-column: span 2;
+}
+
 .project-card {
   display: grid;
   grid-template-rows: 92px 1fr;
@@ -1005,8 +1010,8 @@ li {
   transform: scale(1.035);
 }
 
-.project-visual.survey {
-  background: linear-gradient(135deg, #101116, #273447);
+.project-visual.ecommerce {
+  background: linear-gradient(135deg, #101116, #3f2f1d);
 }
 
 .project-visual.platform {
@@ -1019,10 +1024,6 @@ li {
 
 .project-visual.icms {
   background: linear-gradient(135deg, #101116, #1d333f);
-}
-
-.project-visual.event {
-  background: linear-gradient(135deg, #101116, #3f2f1d);
 }
 
 .tech-list span {
@@ -1527,6 +1528,10 @@ li {
 @media (max-width: 560px) {
   .project-grid {
     grid-template-columns: 1fr;
+  }
+
+  .project-card.featured {
+    grid-column: auto;
   }
 
   .cert-grid {
