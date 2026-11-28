@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sahil-ali27.netlify.app/sitemap.xml
