@@ -55,7 +55,7 @@ Everything lives in `src/data/portfolio.js`. Fields left as `null` are hidden in
 
 ## Getting Started
 
-Prerequisites: Node.js 18+.
+Prerequisites: Node.js 20.19+ or 22.12+ (required by Vite 7).
 
 ```bash
 npm install
@@ -79,6 +79,7 @@ Static Vite build, deployable to Netlify, Vercel or any static host.
 
 - Build command: `npm run build`
 - Publish directory: `dist`
+- Node version: 22 (pinned in `netlify.toml`, so Netlify picks all of this up automatically)
 
 In-page anchor navigation only (no client-side router), so no SPA rewrite rules are needed.
 `public/_headers` adds basic security headers and long-term caching for hashed assets on Netlify.
