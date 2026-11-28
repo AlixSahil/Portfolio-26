@@ -4,7 +4,7 @@ Personal portfolio of Sahil Ali, Full-Stack Software Developer. A single-page si
 engineering work (production platforms and enterprise applications) as visual case studies, alongside
 experience, stack, credentials and contact.
 
-Live portfolio: https://sahil-ali27.netlify.app/
+Previous version: https://sahil-ali27.netlify.app/ (deployed separately from the old repository).
 
 ## What It Includes
 
@@ -41,7 +41,7 @@ src/
     sections/              ← Header, Hero, Marquee, About, Work, Experience, Skills, Credentials, Contact, Footer
     ui/                    ← Reveal, SectionHeader, TechBadge, ProjectPreview, MagneticLink, BackToTop
 public/
-  Sahil-Ali-Resume.pdf, og-image.png, robots.txt, sitemap.xml, _headers (Netlify)
+  Sahil-Ali-Resume.pdf, og-image.png, _headers (Netlify)
   logos/                   ← organisation & issuer logos
 ```
 
@@ -80,6 +80,11 @@ Static Vite build, deployable to Netlify, Vercel or any static host.
 - Build command: `npm run build`
 - Publish directory: `dist`
 - Node version: 22 (pinned in `netlify.toml`, so Netlify picks all of this up automatically)
+
+The site's public address is resolved at build time and written into the canonical URL, Open
+Graph tags, JSON-LD, `robots.txt` and `sitemap.xml` (see `vite.config.js`). Netlify provides it
+automatically through its `URL` build variable, so each Netlify site uses its own address. To force
+a specific address (for example a custom domain), set a `SITE_URL` environment variable.
 
 In-page anchor navigation only (no client-side router), so no SPA rewrite rules are needed.
 `public/_headers` adds basic security headers and long-term caching for hashed assets on Netlify.

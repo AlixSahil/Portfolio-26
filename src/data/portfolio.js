@@ -17,7 +17,6 @@ export const profile = {
   githubHandle: 'AlixSahil',
   linkedin: 'https://www.linkedin.com/in/sahilali8210',
   linkedinHandle: 'sahilali8210',
-  site: 'https://sahil-ali27.netlify.app',
   // From the existing contact copy: "Open to full-time roles, freelance projects, and good conversations."
   availability: 'Open to full-time roles & freelance projects'
 };
